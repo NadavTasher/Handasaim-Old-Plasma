@@ -27,6 +27,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import nadav.tasher.scheduleboard.ota.Checker;
+import nadav.tasher.scheduleboard.ota.Checker.OTAListener;
+
 public class Board {
 
 	// Static Values
@@ -130,7 +133,7 @@ public class Board {
 					public void run() {
 						Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 						while (true) {
-							for (int a = 0; a < scheduleView.getHeight()-screen.height; a += 1) {
+							for (int a = 0; a < scheduleView.getHeight() - screen.height; a += 1) {
 								// System.out.println(a);
 								try {
 									scheduleScroll.getVerticalScrollBar().setValue(a);
@@ -142,7 +145,7 @@ public class Board {
 								} catch (Exception e) {
 								}
 							}
-							for (int a = scheduleView.getHeight()-screen.height - 1; a > 0; a -= 1) {
+							for (int a = scheduleView.getHeight() - screen.height - 1; a > 0; a -= 1) {
 								// System.out.println(a);
 								try {
 									scheduleScroll.getVerticalScrollBar().setValue(a);
@@ -175,44 +178,9 @@ public class Board {
 			@Override
 			public void run() {
 				while (true) {
-					String link = null;
-					try {
-						Document docu = Jsoup.connect(settings.getString("search-url")).get();
-						Elements doc = docu.select("a");
-						for (int i = 0; i < doc.size(); i++) {
-							if (doc.get(i).attr("href").endsWith(".xls") || doc.get(i).attr("href").endsWith(".xlsx")) {
-								link = doc.get(i).attr("href");
-								break;
-							}
-						}
-					} catch (IOException e) {
-					}
-					if (link != null) {
-						// System.out.println(link);
-						if (!link.equals(scheduleFileName)) {
-							scheduleFileName = link;
-							try {
-								URL website = new URL(link);
-								ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-								FileOutputStream fos;
-								if (link.endsWith(".xlsx")) {
-									fos = new FileOutputStream(scheduleFileXLSX);
-								} else {
-									fos = new FileOutputStream(scheduleFileXLS);
-								}
-								fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-								fos.close();
-								if (link.endsWith(".xlsx")) {
-									scheduleView.setFile(scheduleFileXLSX);
-								} else {
-									scheduleView.setFile(scheduleFileXLS);
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-					for (int i = 0; i < 60; i++) {
+					refreshSchedule();
+					refreshOTA();
+					for (int i = 0; i < 300; i++) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -222,5 +190,59 @@ public class Board {
 			}
 		});
 		scheduleUpdater.start();
+	}
+	
+	private static void refreshOTA() {
+		Checker.checkOTA(settings.optString("maintainer","http://p.nockio.com/handasaim/"), programVersion, new OTAListener() {
+			
+			@Override
+			public void onOTACheck(boolean updateAvailable) {
+				if(updateAvailable) {
+//					tellUser("OTA Update Found...");
+				}else {
+//					tellUser("No OTA Updates");
+				}
+			}
+		});
+	}
+
+	private static void refreshSchedule() {
+		String link = null;
+		try {
+			Document docu = Jsoup.connect(settings.getString("search-url")).get();
+			Elements doc = docu.select("a");
+			for (int i = 0; i < doc.size(); i++) {
+				if (doc.get(i).attr("href").endsWith(".xls") || doc.get(i).attr("href").endsWith(".xlsx")) {
+					link = doc.get(i).attr("href");
+					break;
+				}
+			}
+		} catch (IOException e) {
+		}
+		if (link != null) {
+			// System.out.println(link);
+			if (!link.equals(scheduleFileName)) {
+				scheduleFileName = link;
+				try {
+					URL website = new URL(link);
+					ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+					FileOutputStream fos;
+					if (link.endsWith(".xlsx")) {
+						fos = new FileOutputStream(scheduleFileXLSX);
+					} else {
+						fos = new FileOutputStream(scheduleFileXLS);
+					}
+					fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+					fos.close();
+					if (link.endsWith(".xlsx")) {
+						scheduleView.setFile(scheduleFileXLSX);
+					} else {
+						scheduleView.setFile(scheduleFileXLS);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

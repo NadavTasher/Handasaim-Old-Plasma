@@ -13,8 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import nadav.tasher.scheduleboard.board.architecture.AppCore;
-import nadav.tasher.scheduleboard.board.architecture.StudentClass;
+import nadav.tasher.scheduleboard.board.appcore.AppCore;
+import nadav.tasher.scheduleboard.board.appcore.components.Classroom;
 
 public class ScheduleView extends JPanel {
 
@@ -22,7 +22,7 @@ public class ScheduleView extends JPanel {
 	private Runnable doOnUpdate = null;
 
 	public ScheduleView() {
-		setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+//		setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		setPreferredSize(new Dimension(screen.width, screen.height));
 		setMinimumSize(getPreferredSize());
@@ -46,7 +46,7 @@ public class ScheduleView extends JPanel {
 
 	private void initSchedule() {
 		removeAll();
-		ArrayList<StudentClass> sc = AppCore.getClasses(AppCore.getSheet(schedule));
+		ArrayList<Classroom> sc = AppCore.getClasses(AppCore.getSheet(schedule));
 		if (!sc.isEmpty()) {
 			setLayout(new GridLayout(1, sc.size() + 1));
 			int longest = 0;
@@ -55,13 +55,13 @@ public class ScheduleView extends JPanel {
 					longest = sc.get(c).subjects.size();
 			}
 			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-			setPreferredSize(new Dimension(screen.width, (int)(screen.height * ((double)longest / (double)6))));
+			setPreferredSize(new Dimension(screen.width, (int) (screen.height * ((double) longest / (double) 6))));
 			setMinimumSize(getPreferredSize());
 			setMaximumSize(getPreferredSize());
-			add(new HourView(longest));
-			for (int c = 0; c < sc.size(); c++) {
-				add(new ClassView(sc.get(c), longest));
+			for (int c = sc.size()-1; c>0; c--) {
+				add(new ClassView(sc.get(c), longest, c));
 			}
+			add(new HourView(longest));
 		}
 		revalidate();
 		repaint();
@@ -74,13 +74,15 @@ public class ScheduleView extends JPanel {
 	public static class ClassView extends JPanel {
 		private Color classColor;
 
-		public ClassView(StudentClass sc, int hours) {
-			classColor = new Color(200, 200, new Random().nextInt(100)+100);
+		public ClassView(Classroom sc, int hours, int index) {
+			int colorRemover = (index+1) % 16;
+			classColor = new Color(200 - colorRemover * 10, 200 - colorRemover * 10, 200);
 			setLayout(new GridLayout(hours + 1, 1));
 			setBackground(classColor);
 			JLabel className = new JLabel(sc.name);
 			className.setHorizontalAlignment(SwingConstants.CENTER);
 			className.setVerticalAlignment(SwingConstants.CENTER);
+			className.setForeground(Color.BLACK);
 			className.setVerticalTextPosition(SwingConstants.CENTER);
 			className.setHorizontalTextPosition(SwingConstants.CENTER);
 			add(className);
@@ -89,9 +91,13 @@ public class ScheduleView extends JPanel {
 				if (i < sc.subjects.size()) {
 					text = sc.subjects.get(i).name;
 				}
-				JLabel label = new JLabel(text);
+				JLabel label = new JLabel("<html>"+"\u200F"+text+"</html>");
+				label.setForeground(Color.BLACK);
 				label.setHorizontalAlignment(SwingConstants.CENTER);
 				label.setVerticalAlignment(SwingConstants.CENTER);
+				label.setPreferredSize(new Dimension(getWidth(), label.getHeight()));
+				label.setMinimumSize(label.getPreferredSize());
+				label.setMaximumSize(label.getPreferredSize());
 				label.setVerticalTextPosition(SwingConstants.CENTER);
 				label.setHorizontalTextPosition(SwingConstants.CENTER);
 				add(label);
@@ -102,8 +108,10 @@ public class ScheduleView extends JPanel {
 	public static class HourView extends JPanel {
 		public HourView(int hours) {
 			setLayout(new GridLayout(hours + 1, 1));
+			setBackground(new Color(200,200,200));
 			JLabel classes = new JLabel("כיתות");
 			classes.setHorizontalAlignment(SwingConstants.CENTER);
+			classes.setForeground(Color.BLACK);
 			classes.setVerticalAlignment(SwingConstants.CENTER);
 			classes.setVerticalTextPosition(SwingConstants.CENTER);
 			classes.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -112,6 +120,7 @@ public class ScheduleView extends JPanel {
 				JLabel label = new JLabel(String.valueOf(i));
 				label.setHorizontalAlignment(SwingConstants.CENTER);
 				label.setVerticalAlignment(SwingConstants.CENTER);
+				label.setForeground(Color.BLACK);
 				label.setVerticalTextPosition(SwingConstants.CENTER);
 				label.setHorizontalTextPosition(SwingConstants.CENTER);
 				add(label);
