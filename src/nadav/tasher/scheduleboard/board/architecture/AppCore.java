@@ -143,7 +143,9 @@ public class AppCore {
                     ArrayList<StudentClass.Subject> subs = new ArrayList<>();
                     for (int r = startReadingRow + 1; r < rows; r++) {
                         Row row = sheet.getRow(r);
-                        subs.add(new StudentClass.Subject(r - (startReadingRow + 1), row.getCell(c).getStringCellValue().split("\\r?\\n")[0], row.getCell(c).getStringCellValue()));
+                        StudentClass.Subject sc=new StudentClass.Subject(r - (startReadingRow + 1), row.getCell(c).getStringCellValue().split("\\r?\\n")[0], row.getCell(c).getStringCellValue());
+                        if(sc.fullName!=null&&!sc.fullName.equals(""))
+                        subs.add(sc);
                     }
                     classes.add(new StudentClass(sheet.getRow(startReadingRow).getCell(c).getStringCellValue(), subs));
                 }
