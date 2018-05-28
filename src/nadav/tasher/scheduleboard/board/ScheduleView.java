@@ -107,24 +107,34 @@ public class ScheduleView extends JPanel {
 				public void run() {
 					Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 					while (true) {
-						for (int a = 0; a < schedulePane.getHeight() - screen.height; a += 150) {
+						try {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						for (int a = 0; a < schedulePane.getHeight() - screen.height; a += 1) {
 							// System.out.println(a);
 							try {
 								scheduleScroll.getVerticalScrollBar().setValue(a);
 								try {
-									Thread.sleep(1500);
+									Thread.sleep(20);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
 							} catch (Exception e) {
 							}
 						}
-						for (int a = schedulePane.getHeight() - screen.height - 1; a > 0; a -= 150) {
+						try {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						for (int a = schedulePane.getHeight() - screen.height - 1; a > 0; a -= 1) {
 							// System.out.println(a);
 							try {
 								scheduleScroll.getVerticalScrollBar().setValue(a);
 								try {
-									Thread.sleep(1500);
+									Thread.sleep(20);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
