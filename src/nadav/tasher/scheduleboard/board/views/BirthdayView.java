@@ -1,4 +1,4 @@
-package nadav.tasher.scheduleboard.board;
+package nadav.tasher.scheduleboard.board.views;
 
 import javax.swing.JPanel;
 

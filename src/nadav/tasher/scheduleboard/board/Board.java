@@ -27,6 +27,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import nadav.tasher.scheduleboard.board.views.BirthdayView;
+import nadav.tasher.scheduleboard.board.views.ScheduleView;
+import nadav.tasher.scheduleboard.board.views.SwitcherView;
+import nadav.tasher.scheduleboard.board.views.TotalView;
 import nadav.tasher.scheduleboard.ota.Checker;
 import nadav.tasher.scheduleboard.ota.Checker.OTAListener;
 
@@ -45,6 +49,7 @@ public class Board {
 	private static JSONObject settings;
 	private static ScheduleView scheduleView;
 	private static BirthdayView birthdayView;
+	private static TotalView totalView;
 	private static Thread scheduleUpdater;
 	private static String scheduleFileName = "";
 
@@ -54,7 +59,7 @@ public class Board {
 			loadGUI();
 			loadUpdater();
 		} else {
-			tellUser("Failed To Load Configuration.");
+			Utils.tellUser("Failed To Load Configuration.");
 		}
 	}
 
@@ -63,41 +68,8 @@ public class Board {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			tellUser("Failed To Set Desired Theme.");
+			Utils.tellUser("Failed To Set Desired Theme.");
 		}
-	}
-
-	private static void tellUser(String text) {
-		JFrame popup = new JFrame(programName);
-		JLabel label = new JLabel(text);
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setVerticalAlignment(SwingConstants.CENTER);
-		label.setVerticalTextPosition(SwingConstants.CENTER);
-		label.setHorizontalTextPosition(SwingConstants.CENTER);
-		popup.setContentPane(label);
-		popup.setPreferredSize(new Dimension(200, 50));
-		popup.setMinimumSize(popup.getPreferredSize());
-		popup.setMaximumSize(popup.getPreferredSize());
-		popup.setAlwaysOnTop(true);
-		popup.setUndecorated(true);
-		popup.pack();
-		popup.setVisible(true);
-		// Start Timer
-		Thread timer = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				final int seconds = 10;
-				for (int second = seconds; second >= 0; second--) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-					}
-				}
-				popup.setVisible(false);
-			}
-		});
-		timer.start();
 	}
 
 	private static boolean loadConfiguration() {
@@ -118,12 +90,13 @@ public class Board {
 		mainFrame = new JFrame(programName);
 		mainFrame.setUndecorated(true);
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		scheduleView = new ScheduleView(1);
+		scheduleView = new ScheduleView(0.85);
 		birthdayView = new BirthdayView();
+		totalView=new TotalView(scheduleView);
 		SwitcherView sv = new SwitcherView();
 		sv.setRepeatType(SwitcherView.INFINITE);
-		sv.addView(scheduleView, 40);
-		sv.addView(birthdayView, 1);
+		sv.addView(totalView, 80);
+		sv.addView(birthdayView, 10);
 		sv.start();
 		mainFrame.setContentPane(sv);
 		mainFrame.setVisible(true);

@@ -1,4 +1,4 @@
-package nadav.tasher.scheduleboard.board;
+package nadav.tasher.scheduleboard.board.views;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -12,7 +12,7 @@ public class SwitcherView extends JPanel {
 	public static final int NONE = 0;
 	public static final int INFINITE = 1;
 
-	private ArrayList<View> views = new ArrayList<>();
+	ArrayList<View> views = new ArrayList<>();
 	private int repeat = NONE;
 	private Thread switcher;
 
