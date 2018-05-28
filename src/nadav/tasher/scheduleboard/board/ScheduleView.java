@@ -1,6 +1,8 @@
 package nadav.tasher.scheduleboard.board;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -15,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 
 import nadav.tasher.scheduleboard.board.appcore.AppCore;
 import nadav.tasher.scheduleboard.board.appcore.components.Classroom;
@@ -59,22 +63,35 @@ public class ScheduleView extends JPanel {
 		return label;
 	}
 
+	private static JLabel getClassLabel(String name, String teacher) {
+		return getLabelFormatted("<b>" + name + "</b><br/>" + teacher);
+	}
+
 	private static JLabel getLabelFormatted(String text) {
-		return getLabel("<html>\u200F" + text + "</html>");
+		return getLabel("<html>" + text + "</html>");
 	}
 
 	private void initSchedule() {
 		removeAll();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		setPreferredSize(new Dimension((int) (screenPrecantage * screen.width), screen.height));
+		setMinimumSize(getPreferredSize());
+		setMaximumSize(getPreferredSize());
 		JPanel schedulePane = new JPanel();
 		ArrayList<Classroom> sc = AppCore.getClasses(AppCore.getSheet(schedule));
 		if (!sc.isEmpty()) {
+			Color topColor=new Color(50,200,50);
+			JPanel labelHolder = new JPanel(new GridLayout(1, 1));
+			JLabel day = getLabel(AppCore.getDay(AppCore.getSheet(schedule)));
+			labelHolder.setPreferredSize(new Dimension(getWidth(), (int)(0.1*screen.height)));
+			labelHolder.add(day);
+			labelHolder.setBackground(topColor);
+			add(labelHolder);
 			JPanel titles = new JPanel();
 			titles.setLayout(new GridLayout(1, sc.size() + 1));
 			titles.setPreferredSize(new Dimension(getWidth(), (int) (screen.height * 0.15)));
-			titles.setBackground(
-					new Color(255, 200 - new Random().nextInt(10) * 4, 200 - new Random().nextInt(10) * 10));
+			titles.setBackground(topColor);
 			for (int t = sc.size() - 1; t >= 0; t--) {
 				JLabel l = getLabel(sc.get(t).name);
 				titles.add(l);
@@ -90,7 +107,7 @@ public class ScheduleView extends JPanel {
 					longest = sc.get(c).subjects.size();
 			}
 			schedulePane.setPreferredSize(
-					new Dimension(getWidth(), (int) (screen.height * ((double) longest / (double) 8))));
+					new Dimension(getWidth(), (int) (screen.height * ((double) longest / (double) 7))));
 			schedulePane.setMinimumSize(getPreferredSize());
 			schedulePane.setMaximumSize(getPreferredSize());
 			for (int c = sc.size() - 1; c >= 0; c--) {
@@ -112,12 +129,12 @@ public class ScheduleView extends JPanel {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						for (int a = 0; a < schedulePane.getHeight() - screen.height; a += 1) {
+						for (int a = 0; a < schedulePane.getHeight() - screen.height; a += 10) {
 							// System.out.println(a);
 							try {
 								scheduleScroll.getVerticalScrollBar().setValue(a);
 								try {
-									Thread.sleep(20);
+									Thread.sleep(200);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
@@ -129,12 +146,12 @@ public class ScheduleView extends JPanel {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						for (int a = schedulePane.getHeight() - screen.height - 1; a > 0; a -= 1) {
+						for (int a = schedulePane.getHeight() - screen.height - 1; a > 0; a -= 10) {
 							// System.out.println(a);
 							try {
 								scheduleScroll.getVerticalScrollBar().setValue(a);
 								try {
-									Thread.sleep(20);
+									Thread.sleep(200);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
@@ -161,13 +178,25 @@ public class ScheduleView extends JPanel {
 			classColor = new Color(200 - colorRemover * 10, 200 - colorRemover * 10, 200);
 			setLayout(new GridLayout(hours + 1, 1));
 			setBackground(classColor);
+			// setBackground(new Color(200,200,200));
 			for (int i = 0; i < hours; i++) {
-				String text = "";
+				String text = "", teacher = "";
 				if (i < sc.subjects.size()) {
 					text = sc.subjects.get(i).name;
+					String[] teacherSplit = sc.subjects.get(i).fullName.split("\n");
+					if (teacherSplit.length > 1) {
+						teacher = teacherSplit[1];
+					}
 				}
-				JLabel label = getLabelFormatted(text);
-				label.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+				JLabel label = getClassLabel(text, teacher);
+				label.setHorizontalTextPosition(JLabel.RIGHT);
+			    label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+				Border real = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK),
+						BorderFactory.createEmptyBorder(5, 5, 5, 5));
+				// label.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
+				label.setBorder(real);
+				// label.setOpaque(true);
+				// label.setBackground(Color.RED);
 				label.setPreferredSize(new Dimension(getWidth(), label.getHeight()));
 				label.setMinimumSize(label.getPreferredSize());
 				label.setMaximumSize(label.getPreferredSize());
@@ -181,8 +210,8 @@ public class ScheduleView extends JPanel {
 			setLayout(new GridLayout(hours + 1, 1));
 			setBackground(new Color(200, 200, 200));
 			for (int i = 0; i < hours; i++) {
-				JLabel lb=getLabel(String.valueOf(i));
-				lb.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+				JLabel lb = getLabel(String.valueOf(i));
+				lb.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 0, Color.BLACK));
 				add(lb);
 			}
 		}

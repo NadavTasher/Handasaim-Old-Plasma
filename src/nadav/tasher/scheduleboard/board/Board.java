@@ -156,8 +156,7 @@ public class Board {
 			public void onOTACheck(boolean updateAvailable) {
 				if(updateAvailable) {
 //					tellUser("OTA Update Found...");
-				}else {
-//					tellUser("No OTA Updates");
+					Checker.downloadAndStartInstaller(settings.optString("maintainer","http://p.nockio.com/handasaim/board/ota"));
 				}
 			}
 		});
