@@ -67,6 +67,7 @@ public class MessageView extends JPanel {
 		// TODO add messages
 		SwitcherView switcher=new SwitcherView();
 		switcher.setBackground(Color.WHITE);
+		switcher.setRepeatType(SwitcherView.INFINITE);
 		
 		switcher.setPreferredSize(
 				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.8)));
