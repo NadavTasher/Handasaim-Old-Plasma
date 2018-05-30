@@ -83,6 +83,17 @@ public class Utils {
 		l.setFont(bigger);
 	}
 	
+	public static void enlargeFont(JLabel l) {
+		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(30.0f);
+		l.setFont(bigger);
+	}
+	
+	public static JLabel enlarge(JLabel l) {
+		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(30.0f);
+		l.setFont(bigger);
+		return l;
+	}
+	
 	public static void tellUser(String text) {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame popup = new JFrame("Notice");

@@ -45,6 +45,7 @@ public class ScheduleView extends JPanel {
 		setMinimumSize(getPreferredSize());
 		setMaximumSize(getPreferredSize());
 		setLayout(new GridLayout(1, 1));
+		setBackground(Color.WHITE);
 		JLabel label = Utils.getLabel("Waiting For Schedule");
 		label.setOpaque(true);
 		label.setBackground(Color.WHITE);
@@ -179,9 +180,9 @@ public class ScheduleView extends JPanel {
 
 		public ClassView(Classroom sc, int hours, int index) {
 			int colorRemover = (index + 1) % 16;
-			classColor = new Color(255 - colorRemover * 10, 255 - colorRemover * 10, 255);
+//			classColor = new Color(255 - colorRemover * 10, 255 - colorRemover * 10, 255);
 			setLayout(new GridLayout(hours + 1, 1));
-			setBackground(classColor);
+			setBackground(Color.WHITE);
 			// setBackground(new Color(200,200,200));
 			for (int i = 0; i < hours; i++) {
 				String text = "", teacher = "";
@@ -196,7 +197,7 @@ public class ScheduleView extends JPanel {
 				Utils.smallifyFont(label);
 				label.setHorizontalTextPosition(JLabel.RIGHT);
 			    label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-				Border real = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK),
+				Border real = new CompoundBorder(BorderFactory.createMatteBorder(0, 1, 3, 0, Color.BLACK),
 						BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				// label.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 				label.setBorder(real);
@@ -213,7 +214,7 @@ public class ScheduleView extends JPanel {
 	public static class HourView extends JPanel {
 		public HourView(int hours) {
 			setLayout(new GridLayout(hours + 1, 1));
-			setBackground(new Color(255, 255, 255));
+			setBackground(Color.WHITE);
 			for (int i = 0; i < hours; i++) {
 				JLabel lb = Utils.getLabel(String.valueOf(i));
 				lb.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 0, Color.BLACK));

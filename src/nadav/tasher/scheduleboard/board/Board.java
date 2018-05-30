@@ -1,11 +1,5 @@
 package nadav.tasher.scheduleboard.board;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Scrollbar;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,13 +8,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import org.apache.commons.logging.impl.ServletContextCleaner;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -38,7 +27,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.1;
+	static final double programVersion = 0.2;
 	static final String programReleaseDate = "~May 2018";
 
 	// Private Values
@@ -91,12 +80,12 @@ public class Board {
 		mainFrame.setUndecorated(true);
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		scheduleView = new ScheduleView(0.85);
-		birthdayView = new BirthdayView();
+		birthdayView = new BirthdayView(settings.optString("maintainer","http://p.nockio.com/handasaim/board/ota"));
 		totalView=new TotalView(scheduleView);
 		SwitcherView sv = new SwitcherView();
 		sv.setRepeatType(SwitcherView.INFINITE);
-		sv.addView(totalView, 80);
-		sv.addView(birthdayView, 10);
+		sv.addView(totalView, 60);
+		sv.addView(birthdayView, 15);
 		sv.start();
 		mainFrame.setContentPane(sv);
 		mainFrame.setVisible(true);

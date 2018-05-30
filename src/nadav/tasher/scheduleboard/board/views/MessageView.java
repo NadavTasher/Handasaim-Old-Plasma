@@ -81,6 +81,7 @@ public class MessageView extends JPanel {
 				// TODO Auto-generated method stub
 				switcher.views.clear();
 				ArrayList<String> mArray = AppCore.getMessages(sv.getSheet());
+				if(mArray.size()==0)mArray.add("\u200Fאין הודעות...");
 				for (int a = 0; a < mArray.size(); a++) {
 					switcher.addView(Utils.getLabel(mArray.get(a)), 10);
 				}
