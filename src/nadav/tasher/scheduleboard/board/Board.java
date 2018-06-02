@@ -28,8 +28,8 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.3;
-	static final String programReleaseDate = "~May 2018";
+	static final double programVersion = 0.4;
+	static final String programReleaseDate = "~June 2018";
 
 	// Private Values
 	private static final File configuration = new File(System.getProperty("user.dir"), "configuration.json");
@@ -80,7 +80,7 @@ public class Board {
 		mainFrame = new JFrame(programName);
 		mainFrame.setUndecorated(true);
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		scheduleView = new ScheduleView(0.85);
+		scheduleView = new ScheduleView(0.86);
 		birthdayView = new BirthdayView(settings.optString("maintainer","http://p.nockio.com/handasaim/board/ota"));
 		totalView=new TotalView(scheduleView);
 		SwitcherView sv = new SwitcherView();

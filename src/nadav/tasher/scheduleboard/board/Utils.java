@@ -5,11 +5,13 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
@@ -40,8 +42,9 @@ public class Utils {
 			return null;
 		}
 	}
+
 	public static String dayConvert(int dayOfWeek) {
-		switch(dayOfWeek) {
+		switch (dayOfWeek) {
 		case 1:
 			return "ראשון";
 		case 2:
@@ -59,62 +62,69 @@ public class Utils {
 		}
 		return "אין לי מושג איזה יום היום";
 	}
-	
+
 	public static JLabel getLabel(String text) {
 		JLabel label = new JLabel(text);
-		Font bigger = Font.getFont(Font.SANS_SERIF, label.getFont()).deriveFont(20.0f);
+		InputStream is = Utils.class.getResourceAsStream("/fonts/gisha.ttf");
+		Font font;
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(22.0f);
+		} catch (FontFormatException | IOException e) {
+			font = Font.getFont(Font.SANS_SERIF, label.getFont()).deriveFont(22.0f);
+			e.printStackTrace();
+		}
 		label.setForeground(Color.BLACK);
-		label.setFont(bigger);
+		label.setFont(font);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		label.setAlignmentY(Component.CENTER_ALIGNMENT);
 		label.setVerticalAlignment(SwingConstants.CENTER);
 		label.setVerticalTextPosition(JLabel.CENTER);
 		label.setHorizontalTextPosition(JLabel.CENTER);
-//		label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		// label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		return label;
 	}
+
 	public static JLabel getClassLabel(String name, String teacher) {
 		return getLabelFormatted("<b>" + name + "</b><br/>" + teacher);
 	}
-	
-	public static JLabel getLabelRTL(String text) {
-		StringBuilder bld=new StringBuilder();
-		String[] splitToLines=text.split("\n");
-		for(String line:splitToLines) {
-			bld.append("\u200F").append(line).append("\n");
-		}
-		return getLabel(bld.toString());
-	}
+
+	// public static JLabel getLabelRTL(String text) {
+	// StringBuilder bld=new StringBuilder();
+	// String[] splitToLines=text.split("\n");
+	// for(String line:splitToLines) {
+	// bld.append("\u200F").append(line).append("\n");
+	// }
+	// return getLabel(bld.toString());
+	// }
 
 	public static JLabel getLabelFormatted(String text) {
-		JLabel l=getLabelRTL(text);
-		//"<p align=\"center\">"+
-		//+"</p>"
-		l.setText("<html>\n"+"<p align=\"center\">"+l.getText()+"</p>"+"\n</html>");
+		JLabel l = getLabel(text);
+		// "<p align=\"center\">"+
+		// +"</p>"
+		l.setText("<html>\n" + "<p align=\"center\">" + l.getText() + "</p>" + "\n</html>");
 		return l;
 	}
-	
+
 	public static void smallifyFont(JLabel l) {
-		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(16.0f);
-		l.setFont(bigger);
+		l.setFont(l.getFont().deriveFont(16f));
+
 	}
-	
+
 	public static void enlargeFont(JLabel l) {
-		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(30.0f);
-		l.setFont(bigger);
+		l.setFont(l.getFont().deriveFont(30f));
 	}
-	public static void enlargeFont(JLabel l,float size) {
-		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(size);
-		l.setFont(bigger);
+
+	public static void enlargeFont(JLabel l, float size) {
+		l.setFont(l.getFont().deriveFont(size));
+
 	}
-	
+
 	public static JLabel enlarge(JLabel l) {
-		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(30.0f);
-		l.setFont(bigger);
+		l.setFont(l.getFont().deriveFont(30f));
 		return l;
 	}
-	
+
 	public static void tellUser(String text) {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame popup = new JFrame("Notice");

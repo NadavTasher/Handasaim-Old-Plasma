@@ -78,18 +78,20 @@ public class ScheduleView extends JPanel {
 		sheet=AppCore.getSheet(schedule);
 		ArrayList<Classroom> sc = AppCore.getClasses(sheet);
 		if (!sc.isEmpty()) {
-			Color topColor=new Color(50,200,50);
-			JPanel labelHolder = new JPanel(new GridLayout(1, 1));
+			JPanel labelHolder = new JPanel(new GridLayout(2, 1));
 			JLabel day = Utils.getLabel(AppCore.getDay(sheet));
 			Utils.enlargeFont(day,25);
-			labelHolder.setPreferredSize(new Dimension(getWidth(), (int)(0.1*screen.height)));
+			labelHolder.setPreferredSize(new Dimension(getWidth(), (int)(0.15*screen.height)));
+			labelHolder.setMinimumSize(labelHolder.getPreferredSize());
+			labelHolder.setMaximumSize(labelHolder.getPreferredSize());
 			labelHolder.add(day);
-			labelHolder.setBackground(topColor);
+			labelHolder.setBackground(MessageView.topColor);
 			add(labelHolder);
 			JPanel titles = new JPanel();
 			titles.setLayout(new GridLayout(1, sc.size() + 1));
-			titles.setPreferredSize(new Dimension(getWidth(), (int) (screen.height * 0.15)));
-			titles.setBackground(topColor);
+			titles.setMinimumSize(titles.getPreferredSize());
+			titles.setMaximumSize(titles.getPreferredSize());
+			titles.setBackground(MessageView.topColor);
 			for (int t = sc.size() - 1; t >= 0; t--) {
 				JLabel l = Utils.getLabel(sc.get(t).name);
 				titles.add(l);
@@ -97,7 +99,8 @@ public class ScheduleView extends JPanel {
 			JLabel classes = Utils.getLabel("כיתות");
 			classes.setBackground(new Color(255,255,255));
 			titles.add(classes);
-			add(titles);
+			labelHolder.add(titles);
+			add(labelHolder);
 			schedulePane.setLayout(new GridLayout(1, sc.size() + 1));
 			int longest = 0;
 			for (int c = 0; c < sc.size(); c++) {
@@ -111,7 +114,7 @@ public class ScheduleView extends JPanel {
 					longest = sb+1;
 				}
 			}
-			int movingPixels=(int) ((screen.height)/ 4.5);
+			int movingPixels=(int) ((screen.height)/ 6);
 			schedulePane.setPreferredSize(new Dimension(schedulePane.getWidth(), movingPixels*longest));
 			schedulePane.setMinimumSize(getPreferredSize());
 			schedulePane.setMaximumSize(getPreferredSize());
@@ -139,7 +142,7 @@ public class ScheduleView extends JPanel {
 							
 							try {
 								previousPosition=scheduleScroll.getVerticalScrollBar().getValue();
-								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*2);
+								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*4);
 								try {
 									Thread.sleep(3000);
 								} catch (InterruptedException e) {
@@ -183,7 +186,7 @@ public class ScheduleView extends JPanel {
 				JLabel label = Utils.getClassLabel(text, teacher);
 				Utils.smallifyFont(label);
 				Border real = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 3, 1, Color.BLACK),
-						BorderFactory.createEmptyBorder(4,4,4,4));
+						BorderFactory.createEmptyBorder(2,2,2,2));
 				// label.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 				label.setBorder(real);
 				// label.setOpaque(true);

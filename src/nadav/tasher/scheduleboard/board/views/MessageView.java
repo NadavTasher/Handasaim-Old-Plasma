@@ -22,6 +22,7 @@ import nadav.tasher.scheduleboard.board.Utils;
 import nadav.tasher.scheduleboard.board.appcore.AppCore;
 
 public class MessageView extends JPanel {
+	public static final Color topColor=new Color(120,160,230);
 	public MessageView(ScheduleView sv) {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -34,9 +35,11 @@ public class MessageView extends JPanel {
 		JLabel timeAndDate = Utils.getLabel("Waiting For Date n' Time");
 		Utils.enlargeFont(timeAndDate,25f);
 		timeAndDate.setPreferredSize(
-				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.2)));
+				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.15)));
 		timeAndDate.setMinimumSize(timeAndDate.getPreferredSize());
 		timeAndDate.setMaximumSize(timeAndDate.getPreferredSize());
+		timeAndDate.setOpaque(true);
+		timeAndDate.setBackground(topColor);
 		new Thread(new Runnable() {
 
 			@Override
