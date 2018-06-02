@@ -2,14 +2,17 @@ package nadav.tasher.scheduleboard.board;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.font.TextAttribute;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -66,16 +69,30 @@ public class Utils {
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		label.setAlignmentY(Component.CENTER_ALIGNMENT);
 		label.setVerticalAlignment(SwingConstants.CENTER);
-		label.setVerticalTextPosition(SwingConstants.CENTER);
-		label.setHorizontalTextPosition(SwingConstants.CENTER);
+		label.setVerticalTextPosition(JLabel.CENTER);
+		label.setHorizontalTextPosition(JLabel.CENTER);
+//		label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		return label;
 	}
 	public static JLabel getClassLabel(String name, String teacher) {
 		return getLabelFormatted("<b>" + name + "</b><br/>" + teacher);
 	}
+	
+	public static JLabel getLabelRTL(String text) {
+		StringBuilder bld=new StringBuilder();
+		String[] splitToLines=text.split("\n");
+		for(String line:splitToLines) {
+			bld.append("\u200F").append(line).append("\n");
+		}
+		return getLabel(bld.toString());
+	}
 
 	public static JLabel getLabelFormatted(String text) {
-		return getLabel("<html>" + text + "</html>");
+		JLabel l=getLabelRTL(text);
+		//"<p align=\"center\">"+
+		//+"</p>"
+		l.setText("<html>\n"+"<p align=\"center\">"+l.getText()+"</p>"+"\n</html>");
+		return l;
 	}
 	
 	public static void smallifyFont(JLabel l) {
@@ -85,6 +102,10 @@ public class Utils {
 	
 	public static void enlargeFont(JLabel l) {
 		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(30.0f);
+		l.setFont(bigger);
+	}
+	public static void enlargeFont(JLabel l,float size) {
+		Font bigger = Font.getFont(Font.SANS_SERIF, l.getFont()).deriveFont(size);
 		l.setFont(bigger);
 	}
 	

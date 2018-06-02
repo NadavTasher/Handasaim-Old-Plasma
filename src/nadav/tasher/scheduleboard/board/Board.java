@@ -1,11 +1,12 @@
 package nadav.tasher.scheduleboard.board;
 
+import java.awt.font.TextAttribute;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.ReadableByteChannel;import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -27,7 +28,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.2;
+	static final double programVersion = 0.3;
 	static final String programReleaseDate = "~May 2018";
 
 	// Private Values

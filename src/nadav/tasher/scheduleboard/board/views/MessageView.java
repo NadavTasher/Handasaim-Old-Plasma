@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ public class MessageView extends JPanel {
 		// "+(int)(screen.width*(1-sv.getPrecentage())));
 		setBackground(Color.WHITE);
 		JLabel timeAndDate = Utils.getLabel("Waiting For Date n' Time");
+		Utils.enlargeFont(timeAndDate,25f);
 		timeAndDate.setPreferredSize(
 				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.2)));
 		timeAndDate.setMinimumSize(timeAndDate.getPreferredSize());
@@ -68,6 +70,7 @@ public class MessageView extends JPanel {
 		SwitcherView switcher=new SwitcherView();
 		switcher.setBackground(Color.WHITE);
 		switcher.setRepeatType(SwitcherView.INFINITE);
+		switcher.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		
 		switcher.setPreferredSize(
 				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.8)));
@@ -83,7 +86,8 @@ public class MessageView extends JPanel {
 				ArrayList<String> mArray = AppCore.getMessages(sv.getSheet());
 				if(mArray.size()==0)mArray.add("\u200Fאין הודעות...");
 				for (int a = 0; a < mArray.size(); a++) {
-					switcher.addView(Utils.getLabel(mArray.get(a)), 10);
+					JLabel l=Utils.getLabelFormatted(mArray.get(a));
+					switcher.addView(l, 10);
 				}
 				switcher.start();
 			}
