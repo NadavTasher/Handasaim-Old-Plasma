@@ -33,7 +33,7 @@ public class MessageView extends JPanel {
 		// "+(int)(screen.width*(1-sv.getPrecentage())));
 		setBackground(Color.WHITE);
 		JLabel timeAndDate = Utils.getLabel("Waiting For Date n' Time");
-		Utils.enlargeFont(timeAndDate,25f);
+		Utils.enlargeFont(timeAndDate,28f);
 		timeAndDate.setPreferredSize(
 				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.15)));
 		timeAndDate.setMinimumSize(timeAndDate.getPreferredSize());

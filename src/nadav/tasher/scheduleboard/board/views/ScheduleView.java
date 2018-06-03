@@ -144,7 +144,7 @@ public class ScheduleView extends JPanel {
 								previousPosition=scheduleScroll.getVerticalScrollBar().getValue();
 								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*4);
 								try {
-									Thread.sleep(3000);
+									Thread.sleep(9000);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}

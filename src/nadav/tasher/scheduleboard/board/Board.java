@@ -28,7 +28,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.4;
+	static final double programVersion = 0.5;
 	static final String programReleaseDate = "~June 2018";
 
 	// Private Values
