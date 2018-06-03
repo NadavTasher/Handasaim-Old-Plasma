@@ -28,7 +28,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.5;
+	static final double programVersion = 0.6;
 	static final String programReleaseDate = "~June 2018";
 
 	// Private Values
@@ -86,7 +86,7 @@ public class Board {
 		SwitcherView sv = new SwitcherView();
 		sv.setRepeatType(SwitcherView.INFINITE);
 		sv.addView(totalView, 60);
-		sv.addView(birthdayView, 15);
+		sv.addView(birthdayView, 10);
 		sv.start();
 		mainFrame.setContentPane(sv);
 		mainFrame.setVisible(true);

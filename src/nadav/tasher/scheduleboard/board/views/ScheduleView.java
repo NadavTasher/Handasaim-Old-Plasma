@@ -132,22 +132,17 @@ public class ScheduleView extends JPanel {
 				@Override
 				public void run() {
 					while (true) {
-						try {
-							Thread.sleep(5000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
 						int previousPosition=-1;
 						while(previousPosition!=scheduleScroll.getVerticalScrollBar().getValue()) {
 							
 							try {
-								previousPosition=scheduleScroll.getVerticalScrollBar().getValue();
-								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*4);
 								try {
 									Thread.sleep(9000);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
+								previousPosition=scheduleScroll.getVerticalScrollBar().getValue();
+								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*4);
 							} catch (Exception e) {
 							}
 						}
