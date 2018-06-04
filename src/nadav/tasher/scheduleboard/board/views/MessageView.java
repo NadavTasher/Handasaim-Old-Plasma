@@ -22,7 +22,7 @@ import nadav.tasher.scheduleboard.board.Utils;
 import nadav.tasher.scheduleboard.board.appcore.AppCore;
 
 public class MessageView extends JPanel {
-	public static final Color topColor=new Color(230,160,120);
+	public static final Color topColor=new Color(180,200,230);
 	public MessageView(ScheduleView sv) {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -85,7 +85,8 @@ public class MessageView extends JPanel {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				switcher.views.clear();
+				switcher.clearViews();
+				
 				ArrayList<String> mArray = AppCore.getMessages(sv.getSheet());
 				if(mArray.size()==0)mArray.add("\u200Fאין הודעות...");
 				for (int a = 0; a < mArray.size(); a++) {

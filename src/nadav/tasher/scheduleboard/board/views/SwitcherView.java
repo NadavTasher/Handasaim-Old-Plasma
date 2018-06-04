@@ -41,6 +41,11 @@ public class SwitcherView extends JPanel {
 			}
 		});
 	}
+	
+	public void clearViews() {
+		views.clear();
+		removeAll();
+	}
 
 	public void setRepeatType(int repeat) {
 		this.repeat = repeat;
