@@ -1,6 +1,5 @@
 package nadav.tasher.scheduleboard.board.views;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.ArrayList;

@@ -196,6 +196,8 @@ public class BirthdayView extends JPanel {
 			}
 			break;
 		}
+		System.out.println("SM: "+startMonth+" SD: "+startDay+" EM: "+endMonth+" ED: "+endDay);
+
 		Sheet s = getSheet(birthdayList);
 		for (int i = 1; i < s.getLastRowNum() + 1; i++) {
 			String name = s.getRow(i).getCell(0).getStringCellValue();
@@ -207,7 +209,7 @@ public class BirthdayView extends JPanel {
 			currentBd.month = month;
 			currentBd.grade = grade;
 			currentBd.name = name;
-			if ((day >= startDay || day <= endDay) && (month == startMonth || month == endMonth)) {
+			if ((day >= startDay && day<= endDay && startMonth==endMonth) || (month == endMonth&& startMonth!=endMonth && day<= endDay)) {
 				bds.add(currentBd);
 			}
 		}

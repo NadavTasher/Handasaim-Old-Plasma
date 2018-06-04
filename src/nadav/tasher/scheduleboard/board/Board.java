@@ -1,12 +1,12 @@
 package nadav.tasher.scheduleboard.board;
 
-import java.awt.font.TextAttribute;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;import java.util.Locale;
+import java.nio.channels.ReadableByteChannel;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -28,7 +28,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.7;
+	static final double programVersion = 0.8;
 	static final String programReleaseDate = "~June 2018";
 
 	// Private Values
@@ -79,13 +79,13 @@ public class Board {
 	private static void loadGUI() {
 		mainFrame = new JFrame(programName);
 		mainFrame.setUndecorated(true);
-		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		scheduleView = new ScheduleView(0.86);
 		birthdayView = new BirthdayView(settings.optString("maintainer","http://p.nockio.com/handasaim/board/ota"));
 		totalView=new TotalView(scheduleView);
 		SwitcherView sv = new SwitcherView();
 		sv.setRepeatType(SwitcherView.INFINITE);
-		sv.addView(totalView, 60);
+		sv.addView(totalView, 110);
 		sv.addView(birthdayView, 10);
 		sv.start();
 		mainFrame.setContentPane(sv);
@@ -100,7 +100,7 @@ public class Board {
 				while (true) {
 					refreshSchedule();
 					refreshOTA();
-					for (int i = 0; i < 300; i++) {
+					for (int i = 0; i < 120; i++) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -117,8 +117,10 @@ public class Board {
 			
 			@Override
 			public void onOTACheck(boolean updateAvailable) {
+				System.out.println("Searched For Updates");
 				if(updateAvailable) {
 //					tellUser("OTA Update Found...");
+					System.out.println("Update Found");
 					Checker.downloadAndStartInstaller(settings.optString("maintainer","http://p.nockio.com/handasaim/board/ota"));
 				}
 			}

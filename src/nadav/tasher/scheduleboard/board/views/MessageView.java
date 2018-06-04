@@ -1,10 +1,7 @@
 package nadav.tasher.scheduleboard.board.views;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,11 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-
-import nadav.tasher.scheduleboard.board.Egg;
 import nadav.tasher.scheduleboard.board.Utils;
 import nadav.tasher.scheduleboard.board.appcore.AppCore;
 
@@ -71,12 +63,12 @@ public class MessageView extends JPanel {
 		// TODO add date and time
 		// TODO add messages
 		SwitcherView switcher=new SwitcherView();
-		switcher.setBackground(Color.WHITE);
+		switcher.setBackground(topColor);
 		switcher.setRepeatType(SwitcherView.INFINITE);
 		switcher.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		
 		switcher.setPreferredSize(
-				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.8)));
+				new Dimension((int) getPreferredSize().getWidth(), (int) (getPreferredSize().getHeight() * 0.85)));
 		switcher.setMinimumSize(switcher.getPreferredSize());
 		switcher.setMaximumSize(switcher.getPreferredSize());
 		

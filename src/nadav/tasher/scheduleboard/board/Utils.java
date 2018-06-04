@@ -2,20 +2,16 @@ package nadav.tasher.scheduleboard.board;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Toolkit;
-import java.awt.font.TextAttribute;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Locale;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -65,7 +61,7 @@ public class Utils {
 
 	public static JLabel getLabel(String text) {
 		JLabel label = new JLabel(text);
-		InputStream is = Utils.class.getResourceAsStream("/fonts/gisha.ttf");
+		InputStream is = Utils.class.getResourceAsStream("/fonts/rubik.ttf");
 		Font font;
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(22.0f);
@@ -79,8 +75,8 @@ public class Utils {
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		label.setAlignmentY(Component.CENTER_ALIGNMENT);
 		label.setVerticalAlignment(SwingConstants.CENTER);
-		label.setVerticalTextPosition(JLabel.CENTER);
-		label.setHorizontalTextPosition(JLabel.CENTER);
+		label.setVerticalTextPosition(SwingConstants.CENTER);
+		label.setHorizontalTextPosition(SwingConstants.CENTER);
 		// label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		return label;
 	}

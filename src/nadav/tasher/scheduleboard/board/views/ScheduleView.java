@@ -2,21 +2,28 @@ package nadav.tasher.scheduleboard.board.views;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.Toolkit;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
@@ -79,7 +86,7 @@ public class ScheduleView extends JPanel {
 		ArrayList<Classroom> sc = AppCore.getClasses(sheet);
 		if (!sc.isEmpty()) {
 			JPanel labelHolder = new JPanel(new GridLayout(2, 1));
-			JLabel day = Utils.getLabel(AppCore.getDay(sheet));
+			JLabel day = Utils.getLabel("מערכת ליום "+AppCore.getDay(sheet));
 			Utils.enlargeFont(day,25);
 			labelHolder.setPreferredSize(new Dimension(getWidth(), (int)(0.15*screen.height)));
 			labelHolder.setMinimumSize(labelHolder.getPreferredSize());
@@ -114,7 +121,7 @@ public class ScheduleView extends JPanel {
 					longest = sb+1;
 				}
 			}
-			int movingPixels=(int) ((screen.height)/ 6);
+			int movingPixels=(screen.height)/ 6;
 			schedulePane.setPreferredSize(new Dimension(schedulePane.getWidth(), movingPixels*longest));
 			schedulePane.setMinimumSize(getPreferredSize());
 			schedulePane.setMaximumSize(getPreferredSize());
@@ -122,8 +129,12 @@ public class ScheduleView extends JPanel {
 				schedulePane.add(new ClassView(sc.get(c), longest, c));
 			}
 			schedulePane.add(new HourView(longest));
+			//JScrollPane(schedulePane);
 			JScrollPane scheduleScroll = new JScrollPane(schedulePane);
-			scheduleScroll.setBackground(Color.WHITE);
+			scheduleScroll.setBackground(MessageView.topColor);
+//			scheduleScroll.setForeground(MessageView.topColor);
+//			scheduleScroll.setOpaque(false);
+			
 			scheduleScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			scheduleScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 			add(scheduleScroll);
@@ -142,7 +153,7 @@ public class ScheduleView extends JPanel {
 									e.printStackTrace();
 								}
 								previousPosition=scheduleScroll.getVerticalScrollBar().getValue();
-								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*4);
+								scheduleScroll.getVerticalScrollBar().setValue(scheduleScroll.getVerticalScrollBar().getValue()+movingPixels*5);
 							} catch (Exception e) {
 							}
 						}
@@ -160,6 +171,30 @@ public class ScheduleView extends JPanel {
 		doOnUpdate = r;
 	}
 
+	private static class RoundedBorder implements Border {
+
+	    private int radius;
+
+
+	    RoundedBorder(int radius) {
+	        this.radius = radius;
+	    }
+
+
+	    public Insets getBorderInsets(Component c) {
+	        return new Insets( this.radius/2, 0, this.radius/2, 0);
+	    }
+
+
+	    public boolean isBorderOpaque() {
+	        return true;
+	    }
+
+
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+	    }
+	}
 	public static class ClassView extends JPanel {
 		private Color classColor;
 
