@@ -213,9 +213,14 @@ public class ScheduleView extends JPanel {
 						teacher = teacherSplit[1];
 					}
 				}
+				if(text.contains("מתמטיקה")&&!text.contains("טכניונית")&&text.contains("טכ")) {
+					text="מתמטיקה+טכ";
+				}else if (text.contains("מתמטיקה")&&text.contains("טכניונית")) {
+					text="טכניונית";
+				}
 				JLabel label = Utils.getClassLabel(text, teacher);
-				Utils.smallifyFont(label);
-				Border real = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 3, 1, Color.BLACK),
+				Utils.enlargeFont(label,19f);
+				Border real = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 4, 2, Color.BLACK),
 						BorderFactory.createEmptyBorder(2,2,2,2));
 				// label.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
 				label.setBorder(real);
@@ -235,7 +240,7 @@ public class ScheduleView extends JPanel {
 			setBackground(Color.WHITE);
 			for (int i = 0; i < hours; i++) {
 				JLabel lb = Utils.getLabel(String.valueOf(i));
-				lb.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 0, Color.BLACK));
+				lb.setBorder(BorderFactory.createMatteBorder(0, 2, 4, 0, Color.BLACK));
 				add(lb);
 			}
 		}

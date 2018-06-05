@@ -82,7 +82,7 @@ public class MessageView extends JPanel {
 				ArrayList<String> mArray = AppCore.getMessages(sv.getSheet());
 				if(mArray.size()==0)mArray.add("\u200Fאין הודעות...");
 				for (int a = 0; a < mArray.size(); a++) {
-					JLabel l=Utils.getLabelFormatted(mArray.get(a));
+					JLabel l=Utils.getLabelFormatted(mArray.get(a).replaceAll("\n", "<br/>"));
 					switcher.addView(l, 10);
 				}
 			}
