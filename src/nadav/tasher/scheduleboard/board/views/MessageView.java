@@ -85,9 +85,9 @@ public class MessageView extends JPanel {
 					JLabel l=Utils.getLabelFormatted(mArray.get(a));
 					switcher.addView(l, 10);
 				}
-				switcher.start();
 			}
 		});
+		switcher.start();
 		add(switcher);
 	}
 }

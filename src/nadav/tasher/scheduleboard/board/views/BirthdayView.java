@@ -196,7 +196,7 @@ public class BirthdayView extends JPanel {
 			}
 			break;
 		}
-		System.out.println("SM: "+startMonth+" SD: "+startDay+" EM: "+endMonth+" ED: "+endDay);
+//		System.out.println("SM: "+startMonth+" SD: "+startDay+" EM: "+endMonth+" ED: "+endDay);
 
 		Sheet s = getSheet(birthdayList);
 		for (int i = 1; i < s.getLastRowNum() + 1; i++) {

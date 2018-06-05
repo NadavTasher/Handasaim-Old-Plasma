@@ -28,7 +28,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 0.8;
+	static final double programVersion = 0.9;
 	static final String programReleaseDate = "~June 2018";
 
 	// Private Values
@@ -142,7 +142,9 @@ public class Board {
 		}
 		if (link != null) {
 			// System.out.println(link);
-			if (!link.equals(scheduleFileName)) {
+			// Add An !
+			// !link.equals(scheduleFileName)
+			if (true) {
 				scheduleFileName = link;
 				try {
 					URL website = new URL(link);
