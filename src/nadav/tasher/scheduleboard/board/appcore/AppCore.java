@@ -172,6 +172,7 @@ public class AppCore {
                         foundSheet=current;
                     }
                 }
+                workBook.close();
                 return foundSheet;
             } else {
                 XSSFWorkbook workBook = new XSSFWorkbook(new FileInputStream(f));
@@ -182,6 +183,7 @@ public class AppCore {
                         foundSheet=current;
                     }
                 }
+                workBook.close();
                 return foundSheet;
             }
         } catch (IOException ignored) {

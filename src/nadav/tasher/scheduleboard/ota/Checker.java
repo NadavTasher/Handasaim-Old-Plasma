@@ -30,6 +30,7 @@ public class Checker {
 		while(s.hasNextLine()) {
 			sb.append(s.nextLine());
 		}
+		s.close();
 		JSONObject mObject=new JSONObject(sb.toString());
 		if(mObject.has("latestVersion")) {
 			if(mObject.getDouble("latestVersion")>currentVersion) {
@@ -58,7 +59,7 @@ public class Checker {
 			FileOutputStream fos= new FileOutputStream(otaInstallerLocalFile);
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close();
-			Process proc = Runtime.getRuntime().exec("java -jar "+otaInstallerLocalFile.toString());
+			Runtime.getRuntime().exec("java -jar "+otaInstallerLocalFile.toString());
 			System.exit(0);
 			}catch(Exception e) {
 			}

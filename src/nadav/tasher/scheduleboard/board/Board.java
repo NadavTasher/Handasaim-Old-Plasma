@@ -28,7 +28,7 @@ public class Board {
 
 	// Static Values
 	static final String programName = "Handasaim Schedule Board";
-	static final double programVersion = 1.1;
+	static final double programVersion = 1.2;
 	static final String programReleaseDate = "~June 2018";
 
 	// Private Values
@@ -98,6 +98,7 @@ public class Board {
 			@Override
 			public void run() {
 				while (true) {
+//					scheduleView.setFile(scheduleFileXLS);
 					refreshSchedule();
 					refreshOTA();
 					for (int i = 0; i < 120; i++) {

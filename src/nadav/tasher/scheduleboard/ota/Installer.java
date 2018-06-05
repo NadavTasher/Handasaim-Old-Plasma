@@ -39,7 +39,7 @@ public class Installer {
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close();
 			label.setText("OTA Installation OK");
-			Process proc = Runtime.getRuntime().exec("java -jar " + Checker.runnableFile.toString());
+			Runtime.getRuntime().exec("java -jar " + Checker.runnableFile.toString());
 			// Start Timer
 			Thread timer = new Thread(new Runnable() {
 

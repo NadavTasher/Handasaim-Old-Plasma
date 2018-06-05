@@ -26,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import nadav.tasher.scheduleboard.board.Utils;
 
 public class BirthdayView extends JPanel {
+	private static final long serialVersionUID = 1L;
 	public static final File birthdayList = new File(System.getProperty("user.dir"), "birthdayList.xlsx");
 	JPanel birthdays, nine, ten, eleven, tw;
 
@@ -221,11 +222,14 @@ public class BirthdayView extends JPanel {
 			if (f.toString().endsWith(".xls")) {
 				POIFSFileSystem fileSystem = new POIFSFileSystem(new FileInputStream(f));
 				Workbook workBook = new HSSFWorkbook(fileSystem);
-				return workBook.getSheetAt(0);
+				Sheet s=workBook.getSheetAt(0);
+				workBook.close();
+				return s;
 			} else {
 				XSSFWorkbook workBook = new XSSFWorkbook(new FileInputStream(f));
-				return workBook.getSheetAt(0);
-			}
+				Sheet s=workBook.getSheetAt(0);
+				workBook.close();
+				return s;			}
 		} catch (IOException ignored) {
 			return null;
 		}

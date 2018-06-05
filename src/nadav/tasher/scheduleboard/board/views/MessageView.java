@@ -14,6 +14,7 @@ import nadav.tasher.scheduleboard.board.Utils;
 import nadav.tasher.scheduleboard.board.appcore.AppCore;
 
 public class MessageView extends JPanel {
+	private static final long serialVersionUID = 1L;
 	public static final Color topColor=new Color(180,200,230);
 	public MessageView(ScheduleView sv) {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -63,7 +64,7 @@ public class MessageView extends JPanel {
 		// TODO add date and time
 		// TODO add messages
 		SwitcherView switcher=new SwitcherView();
-		switcher.setBackground(topColor);
+		switcher.setBackground(Color.WHITE);
 		switcher.setRepeatType(SwitcherView.INFINITE);
 		switcher.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		

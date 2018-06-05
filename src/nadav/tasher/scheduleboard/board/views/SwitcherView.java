@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class SwitcherView extends JPanel {
-
+	private static final long serialVersionUID = 1L;
 	public static final int NONE = 0;
 	public static final int INFINITE = 1;
 
@@ -57,7 +57,8 @@ public class SwitcherView extends JPanel {
 							Thread.sleep(1000 * views.get(c).time);
 						} catch (InterruptedException e) {
 						}
-						remove(views.get(c).panel);
+//						remove(views.get(c).panel);
+						removeAll();
 						revalidate();
 						repaint();
 					}

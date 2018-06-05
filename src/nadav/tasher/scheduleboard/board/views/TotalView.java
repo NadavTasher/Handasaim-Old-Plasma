@@ -7,6 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 public class TotalView extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private MessageView messageView;
 
 	public TotalView(ScheduleView sv) {
