@@ -214,7 +214,7 @@ public class ScheduleView extends JPanel {
 					}
 				}
 				if(text.contains("מתמטיקה")&&!text.contains("טכניונית")&&text.contains("טכ")) {
-					text="מתמטיקה+טכ";
+					text="מתמט' + טכ";
 				}else if (text.contains("מתמטיקה")&&text.contains("טכניונית")) {
 					text="טכניונית";
 				}

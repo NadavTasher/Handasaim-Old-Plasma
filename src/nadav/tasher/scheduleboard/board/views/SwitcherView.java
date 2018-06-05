@@ -17,6 +17,33 @@ public class SwitcherView extends JPanel {
 
 	public SwitcherView() {
 		setLayout(new GridLayout(1, 1));
+	}
+	
+	public void stop() {
+		if(switcher!=null) {
+		switcher.interrupt();
+		}
+		switcher=null;
+	}
+	
+	public void clearViews() {
+		views.clear();
+		removeAll();
+	}
+
+	public void setRepeatType(int repeat) {
+		this.repeat = repeat;
+	}
+
+	public void addView(Container p, int time) {
+		views.add(new View(p, time));
+	}
+
+	public void start() {
+		// for (int c=0;c<views.size();c++) {
+		// views.get(c).panel.setVisible(false);
+		// add(views.get(c).panel);
+		// }
 		switcher = new Thread(new Runnable() {
 
 			@Override
@@ -39,26 +66,6 @@ public class SwitcherView extends JPanel {
 				}
 			}
 		});
-	}
-	
-	public void clearViews() {
-		views.clear();
-		removeAll();
-	}
-
-	public void setRepeatType(int repeat) {
-		this.repeat = repeat;
-	}
-
-	public void addView(Container p, int time) {
-		views.add(new View(p, time));
-	}
-
-	public void start() {
-		// for (int c=0;c<views.size();c++) {
-		// views.get(c).panel.setVisible(false);
-		// add(views.get(c).panel);
-		// }
 		switcher.start();
 	}
 

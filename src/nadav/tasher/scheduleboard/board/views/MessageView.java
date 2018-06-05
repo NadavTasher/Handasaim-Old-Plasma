@@ -77,6 +77,7 @@ public class MessageView extends JPanel {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+				switcher.stop();
 				switcher.clearViews();
 				
 				ArrayList<String> mArray = AppCore.getMessages(sv.getSheet());
@@ -85,9 +86,9 @@ public class MessageView extends JPanel {
 					JLabel l=Utils.getLabelFormatted(mArray.get(a).replaceAll("\n", "<br/>"));
 					switcher.addView(l, 10);
 				}
+				switcher.start();
 			}
 		});
-		switcher.start();
 		add(switcher);
 	}
 }
