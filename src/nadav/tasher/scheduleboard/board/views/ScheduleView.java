@@ -16,7 +16,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
 import org.apache.poi.ss.usermodel.Sheet;
-
 import nadav.tasher.scheduleboard.board.Utils;
 import nadav.tasher.scheduleboard.board.appcore.AppCore;
 import nadav.tasher.scheduleboard.board.appcore.components.Classroom;
@@ -29,6 +28,8 @@ public class ScheduleView extends JPanel {
 	private Sheet sheet;
 	private Runnable doOnUpdate = null;
 	private double screenPrecantage;
+	private Thread scroll;
+	private JScrollPane scheduleScroll;
 
 	public double getPrecentage() {
 		return screenPrecantage;
@@ -114,7 +115,7 @@ public class ScheduleView extends JPanel {
 			}
 			schedulePane.add(new HourView(longest));
 			// JScrollPane(schedulePane);
-			JScrollPane scheduleScroll = new JScrollPane(schedulePane);
+			 scheduleScroll = new JScrollPane(schedulePane);
 			scheduleScroll.setBackground(MessageView.topColor);
 			// scheduleScroll.setForeground(MessageView.topColor);
 			// scheduleScroll.setOpaque(false);
@@ -122,36 +123,47 @@ public class ScheduleView extends JPanel {
 			scheduleScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			scheduleScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 			add(scheduleScroll);
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					while (true) {
-						int previousPosition = -1;
-						while (previousPosition != scheduleScroll.getVerticalScrollBar().getValue()) {
-
-							try {
-								try {
-									Thread.sleep(2500);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-								previousPosition = scheduleScroll.getVerticalScrollBar().getValue();
-								scheduleScroll.getVerticalScrollBar()
-										.setValue(scheduleScroll.getVerticalScrollBar().getValue() + movingPixels*5);
-							} catch (Exception e) {
-							}
-						}
-						scheduleScroll.getVerticalScrollBar().setValue(0);
-					}
-
-				}
-			}).start();
+			startScrolling(movingPixels);
 		}
 		revalidate();
 		repaint();
 	}
 
+	private void startScrolling(int movin) {
+		if(scroll!=null) {
+			scroll.interrupt();
+		}
+		scroll=null;
+		scroll=new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				if(scheduleScroll!=null) {
+				while (true) {
+					int previousPosition = -1;
+					while (previousPosition != scheduleScroll.getVerticalScrollBar().getValue()) {
+
+						try {
+							try {
+								Thread.sleep(8000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							previousPosition = scheduleScroll.getVerticalScrollBar().getValue();
+							scheduleScroll.getVerticalScrollBar()
+									.setValue(scheduleScroll.getVerticalScrollBar().getValue() + movin*5);
+						} catch (Exception e) {
+						}
+					}
+					scheduleScroll.getVerticalScrollBar().setValue(0);
+				}
+				}
+
+			}
+		});
+		scroll.start();
+	}
+	
 	public int getLastHour(ArrayList<Subject> subjects) {
 		for (int hour = subjects.size() - 1; hour > 0; hour--) {
 			if (!subjects.get(hour).fullName.isEmpty()) {
