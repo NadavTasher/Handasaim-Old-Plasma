@@ -3,63 +3,70 @@ package nadav.tasher.handasaim.plasma.views;
 import nadav.tasher.handasaim.plasma.Utils;
 import nadav.tasher.handasaim.plasma.appcore.AppCore;
 import nadav.tasher.handasaim.plasma.appcore.components.Classroom;
-import org.apache.poi.ss.usermodel.Sheet;
+import nadav.tasher.handasaim.plasma.appcore.components.Schedule;
+import nadav.tasher.handasaim.plasma.appcore.components.Subject;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class ScheduleView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private File schedule;
-	private Sheet sheet;
-	private Runnable doOnUpdate = null;
-	private double screenPrecantage;
-	private Thread scroll;
-	private JScrollPane scheduleScroll;
+	private Schedule schedule;
+	private Timer scrollTimer = new Timer();
+	private ArrayList<Layer> scheduleLayers = new ArrayList<Layer>();
 
-	public double getPrecentage() {
-		return screenPrecantage;
+	public ScheduleView() {
+		setWaitingView();
 	}
 
-	public ScheduleView(double screenPrecentage) {
-		// setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		this.screenPrecantage = screenPrecentage;
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		setPreferredSize(new Dimension((int) (this.screenPrecantage * screen.width), screen.height));
-		setMinimumSize(getPreferredSize());
-		setMaximumSize(getPreferredSize());
+	private void setWaitingView() {
+		removeAll();
 		setLayout(new GridLayout(1, 1));
-		setBackground(Color.WHITE);
 		JLabel label = Utils.getLabel("Waiting For Schedule");
 		label.setOpaque(true);
-		label.setBackground(Color.WHITE);
 		add(label);
 	}
 
-	public void setFile(File scheduleFile) {
-		schedule = scheduleFile;
-		initSchedule();
-		if (doOnUpdate != null) {
-			doOnUpdate.run();
-		}
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+		setScheduleView();
 	}
 
-	public Sheet getSheet() {
-		return sheet;
+	private int getLastHour() {
+		int lastHour = 0;
+		for (Classroom classroom : schedule.getClassrooms()) {
+			int classroomLastHour = 0;
+			for (int subjectIndex = classroom.getSubjects().size() - 1; subjectIndex >= 0; subjectIndex--) {
+				if (!classroom.getSubjects().get(subjectIndex).getDescription().isEmpty()) {
+					classroomLastHour = subjectIndex;
+					break;
+				}
+			}
+			if (classroomLastHour > lastHour) lastHour = classroomLastHour;
+		}
+		return lastHour;
+	}
+
+	private void setScheduleView() {
+		removeAll();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		int lastHour = getLastHour();
+		for (int hour = 0; hour < lastHour; hour++) {
+			for (Classroom classroom : schedule.getClassrooms()) {
+
+			}
+		}
 	}
 
 	private void initSchedule() {
 		removeAll();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		setPreferredSize(new Dimension((int) (screenPrecantage * screen.width), screen.height));
-		setMinimumSize(getPreferredSize());
-		setMaximumSize(getPreferredSize());
+
 		JPanel schedulePane = new JPanel();
 		schedulePane.setBackground(Color.WHITE);
 		sheet = AppCore.getSheet(schedule);
@@ -155,17 +162,18 @@ public class ScheduleView extends JPanel {
 		scroll.start();
 	}
 
-	public int getLastHour(ArrayList<Classroom.Subject> subjects) {
-		for (int hour = subjects.size() - 1; hour > 0; hour--) {
-			if (!subjects.get(hour).fullName.isEmpty()) {
-				return hour;
+	public static class Layer extends JPanel {
+		public Layer(int length) {
+			setLayout(new GridLayout(1, length));
+		}
+
+		public void addSubject(Subject subject) {
+			if (subject != null) {
+				// TODO add 'subject'
+			} else {
+				add(new JPanel());
 			}
 		}
-		return 0;
-	}
-
-	public void setOnUpdated(Runnable r) {
-		doOnUpdate = r;
 	}
 
 	public static class ClassView extends JPanel {

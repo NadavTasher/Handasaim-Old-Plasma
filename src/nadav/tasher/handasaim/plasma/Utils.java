@@ -73,15 +73,6 @@ public class Utils {
 		return getLabelFormatted("<b>" + name + "</b><br/>" + teacher);
 	}
 
-	// public static JLabel getLabelRTL(String text) {
-	// StringBuilder bld=new StringBuilder();
-	// String[] splitToLines=text.split("\n");
-	// for(String line:splitToLines) {
-	// bld.append("\u200F").append(line).append("\n");
-	// }
-	// return getLabel(bld.toString());
-	// }
-
 	public static JLabel getLabelFormatted(String text) {
 		JLabel l = getLabel(text);
 		// "<p align=\"center\">"+
@@ -127,20 +118,27 @@ public class Utils {
 		popup.pack();
 		popup.setVisible(true);
 		// Start Timer
-		Thread timer = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				final int seconds = 10;
-				for (int second = seconds; second >= 0; second--) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-					}
+		Thread timer = new Thread(() -> {
+			final int seconds = 10;
+			for (int second = seconds; second >= 0; second--) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
 				}
-				popup.setVisible(false);
 			}
+			popup.setVisible(false);
 		});
 		timer.start();
 	}
+
+	public static int x() {
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		return screen.width;
+	}
+
+	public static int y() {
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		return screen.height;
+	}
+
 }

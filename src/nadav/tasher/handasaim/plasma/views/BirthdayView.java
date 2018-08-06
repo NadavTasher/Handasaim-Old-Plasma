@@ -19,6 +19,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+@Deprecated
 public class BirthdayView extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public static final File birthdayList = new File(System.getProperty("user.dir"), "birthdayList.xlsx");
@@ -118,78 +119,78 @@ public class BirthdayView extends JPanel {
 		int startDay = current.get(Calendar.DAY_OF_MONTH);
 		int endMonth = startMonth, endDay = startDay + 7;
 		switch (startMonth) {
-		case 1:
-			if (endDay > 31) {
-				endMonth = startMonth + 1;
-				endDay %= 31;
-			}
-			break;
-		case 2:
-			if (endDay > 28) {
-				endMonth = startMonth + 1;
-				endDay %= 28;
-			}
-			break;
-		case 3:
-			if (endDay > 31) {
-				endMonth = startMonth + 1;
-				endDay %= 31;
-			}
-			break;
-		case 4:
-			if (endDay > 30) {
-				endMonth = startMonth + 1;
-				endDay %= 30;
-			}
-			break;
-		case 5:
-			if (endDay > 31) {
-				endMonth = startMonth + 1;
-				endDay %= 31;
-			}
-			break;
-		case 6:
-			if (endDay > 30) {
-				endMonth = startMonth + 1;
-				endDay %= 30;
-			}
-			break;
-		case 7:
-			if (endDay > 31) {
-				endMonth = startMonth + 1;
-				endDay %= 31;
-			}
-			break;
-		case 8:
-			if (endDay > 31) {
-				endMonth = startMonth + 1;
-				endDay %= 31;
-			}
-			break;
-		case 9:
-			if (endDay > 30) {
-				endMonth = startMonth + 1;
-				endDay %= 30;
-			}
-			break;
-		case 10:
-			if (endDay > 31) {
-				endMonth = startMonth + 1;
-				endDay %= 31;
-			}
-			break;
-		case 11:
-			if (endDay > 30) {
-				endMonth = startMonth + 1;
-				endDay %= 30;
-			}
-			break;
-		case 12:
-			if (endDay > 31) {
-				endMonth = 1;
-				endDay %= 31;
-			}
-			break;
+			case 1:
+				if (endDay > 31) {
+					endMonth = startMonth + 1;
+					endDay %= 31;
+				}
+				break;
+			case 2:
+				if (endDay > 28) {
+					endMonth = startMonth + 1;
+					endDay %= 28;
+				}
+				break;
+			case 3:
+				if (endDay > 31) {
+					endMonth = startMonth + 1;
+					endDay %= 31;
+				}
+				break;
+			case 4:
+				if (endDay > 30) {
+					endMonth = startMonth + 1;
+					endDay %= 30;
+				}
+				break;
+			case 5:
+				if (endDay > 31) {
+					endMonth = startMonth + 1;
+					endDay %= 31;
+				}
+				break;
+			case 6:
+				if (endDay > 30) {
+					endMonth = startMonth + 1;
+					endDay %= 30;
+				}
+				break;
+			case 7:
+				if (endDay > 31) {
+					endMonth = startMonth + 1;
+					endDay %= 31;
+				}
+				break;
+			case 8:
+				if (endDay > 31) {
+					endMonth = startMonth + 1;
+					endDay %= 31;
+				}
+				break;
+			case 9:
+				if (endDay > 30) {
+					endMonth = startMonth + 1;
+					endDay %= 30;
+				}
+				break;
+			case 10:
+				if (endDay > 31) {
+					endMonth = startMonth + 1;
+					endDay %= 31;
+				}
+				break;
+			case 11:
+				if (endDay > 30) {
+					endMonth = startMonth + 1;
+					endDay %= 30;
+				}
+				break;
+			case 12:
+				if (endDay > 31) {
+					endMonth = 1;
+					endDay %= 31;
+				}
+				break;
 		}
 //		System.out.println("SM: "+startMonth+" SD: "+startDay+" EM: "+endMonth+" ED: "+endDay);
 
