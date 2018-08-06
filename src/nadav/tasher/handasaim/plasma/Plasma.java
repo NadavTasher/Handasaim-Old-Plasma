@@ -1,6 +1,19 @@
-package nadav.tasher.scheduleboard.board;
+package nadav.tasher.handasaim.plasma;
 
-import java.awt.Frame;
+import nadav.tasher.handasaim.plasma.ota.Checker;
+import nadav.tasher.handasaim.plasma.ota.Checker.OTAListener;
+import nadav.tasher.handasaim.plasma.views.BirthdayView;
+import nadav.tasher.handasaim.plasma.views.ScheduleView;
+import nadav.tasher.handasaim.plasma.views.SwitcherView;
+import nadav.tasher.handasaim.plasma.views.TotalView;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,26 +21,10 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import nadav.tasher.scheduleboard.board.views.BirthdayView;
-import nadav.tasher.scheduleboard.board.views.ScheduleView;
-import nadav.tasher.scheduleboard.board.views.SwitcherView;
-import nadav.tasher.scheduleboard.board.views.TotalView;
-import nadav.tasher.scheduleboard.ota.Checker;
-import nadav.tasher.scheduleboard.ota.Checker.OTAListener;
-
-public class Board {
+public class Plasma {
 
 	// Static Values
-	static final String programName = "Handasaim Schedule Board";
+	static final String programName = "Handasaim Schedule Plasma";
 	static final double programVersion = 1.3;
 	static final String programReleaseDate = "~June 2018";
 

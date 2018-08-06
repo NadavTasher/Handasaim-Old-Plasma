@@ -1,25 +1,16 @@
-package nadav.tasher.scheduleboard.board.views;
+package nadav.tasher.handasaim.plasma.views;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.io.File;
-import java.util.ArrayList;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import nadav.tasher.handasaim.plasma.Utils;
+import nadav.tasher.handasaim.plasma.appcore.AppCore;
+import nadav.tasher.handasaim.plasma.appcore.components.Classroom;
+import org.apache.poi.ss.usermodel.Sheet;
+
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
-
-import org.apache.poi.ss.usermodel.Sheet;
-import nadav.tasher.scheduleboard.board.Utils;
-import nadav.tasher.scheduleboard.board.appcore.AppCore;
-import nadav.tasher.scheduleboard.board.appcore.components.Classroom;
-import nadav.tasher.scheduleboard.board.appcore.components.Classroom.Subject;
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
 
 public class ScheduleView extends JPanel {
 
@@ -163,8 +154,8 @@ public class ScheduleView extends JPanel {
 		});
 		scroll.start();
 	}
-	
-	public int getLastHour(ArrayList<Subject> subjects) {
+
+	public int getLastHour(ArrayList<Classroom.Subject> subjects) {
 		for (int hour = subjects.size() - 1; hour > 0; hour--) {
 			if (!subjects.get(hour).fullName.isEmpty()) {
 				return hour;

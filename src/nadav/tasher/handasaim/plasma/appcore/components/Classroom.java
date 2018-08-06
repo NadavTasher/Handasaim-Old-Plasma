@@ -1,4 +1,4 @@
-package nadav.tasher.scheduleboard.board.appcore.components;
+package nadav.tasher.handasaim.plasma.appcore.components;
 
 import java.util.ArrayList;
 

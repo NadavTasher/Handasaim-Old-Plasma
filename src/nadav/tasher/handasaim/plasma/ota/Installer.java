@@ -1,15 +1,11 @@
-package nadav.tasher.scheduleboard.ota;
+package nadav.tasher.handasaim.plasma.ota;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class Installer {
 	private static final String latestOTA = "http://p.nockio.com/handasaim/board/ota/"+Checker.otaFile;

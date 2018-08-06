@@ -1,10 +1,7 @@
-package nadav.tasher.scheduleboard.board.views;
+package nadav.tasher.handasaim.plasma.views;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class TotalView extends JPanel {
 	private static final long serialVersionUID = 1L;

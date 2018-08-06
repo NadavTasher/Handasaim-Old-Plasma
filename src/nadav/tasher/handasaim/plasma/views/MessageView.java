@@ -1,17 +1,12 @@
-package nadav.tasher.scheduleboard.board.views;
+package nadav.tasher.handasaim.plasma.views;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import nadav.tasher.handasaim.plasma.Utils;
+import nadav.tasher.handasaim.plasma.appcore.AppCore;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import nadav.tasher.scheduleboard.board.Utils;
-import nadav.tasher.scheduleboard.board.appcore.AppCore;
 
 public class MessageView extends JPanel {
 	private static final long serialVersionUID = 1L;

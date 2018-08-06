@@ -1,10 +1,8 @@
-package nadav.tasher.scheduleboard.board.views;
+package nadav.tasher.handasaim.plasma.views;
 
-import java.awt.Container;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
-
-import javax.swing.JPanel;
 
 public class SwitcherView extends JPanel {
 	private static final long serialVersionUID = 1L;

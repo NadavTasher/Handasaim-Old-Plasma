@@ -1,4 +1,4 @@
-package nadav.tasher.scheduleboard.board;
+package nadav.tasher.handasaim.plasma;
 
 import java.util.Random;
 
