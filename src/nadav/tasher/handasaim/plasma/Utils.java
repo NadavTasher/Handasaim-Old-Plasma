@@ -49,7 +49,7 @@ public class Utils {
 
 	public static JLabel getLabel(String text) {
 		JLabel label = new JLabel(text);
-		InputStream is = Utils.class.getResourceAsStream("/fonts/rubik.ttf");
+		InputStream is = Utils.class.getResourceAsStream("/internal/rubik.ttf");
 		Font font;
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(22.0f);

@@ -26,7 +26,7 @@ public class Plasma {
 
     // Static Values
     static final String programName = "Handasaim Plasma";
-    static final double programVersion = 1.3;
+    static final double programVersion = 2.0;
     static final String programReleaseDate = "~August 2018";
 
     // Private Values
@@ -37,7 +37,6 @@ public class Plasma {
     private static JFrame mainFrame;
     private static JSONObject settings;
     private static ScheduleView scheduleView;
-    private static BirthdayView birthdayView;
     private static PlasmaView plasmaView;
     private static Thread scheduleUpdater;
     private static String scheduleFileName = "";
