@@ -72,17 +72,6 @@ public class Schedule {
             this.type = type;
         }
 
-        public static Builder fromSchedule(Schedule schedule) {
-            Builder builder = new Builder(schedule.type);
-            builder.classrooms = schedule.classrooms;
-            builder.messages = schedule.messages;
-            builder.day = schedule.day;
-            builder.date = schedule.date;
-            builder.name = schedule.name;
-            builder.origin = schedule.origin;
-            return builder;
-        }
-
         public void addMessage(String message) {
             messages.add(message);
         }
@@ -117,42 +106,15 @@ public class Schedule {
             assembleSignature();
         }
 
-        private void assembleTeachers() {
-            // Changed Back To Regular For To Add The Teachers To The Subjects
-            for (int a = 0; a < classrooms.size(); a++) {
-                Classroom currentClassroom = classrooms.get(a);
-                for (int b = 0; b < currentClassroom.getSubjects().size(); b++) {
-                    Subject currentSubject = currentClassroom.getSubjects().get(b);
-                    for (String currentTeacher : currentSubject.getTeacherStrings()) {
-                        if (!currentSubject.getDescription().isEmpty() && !currentSubject.getName().isEmpty() && !currentTeacher.isEmpty()) {
-                            // Look For The Same Teacher In The Existing List
-                            boolean foundTeacher = false;
-                            for (Teacher scanTeacher : teachers) {
-                                if (foundTeacher) break;
-                                switch (compareTeachers(scanTeacher, currentTeacher, currentSubject)) {
-                                    case COMPARE_INCORRECT:
-                                        break;
-                                    case COMPARE_ADD_NAME:
-                                        scanTeacher.addName(currentTeacher);
-                                    case COMPARE_CORRECT:
-                                        scanTeacher.addSubject(currentSubject);
-                                        currentSubject.addTeacher(scanTeacher);
-                                        foundTeacher = true;
-                                        break;
-                                }
-                            }
-                            if (!foundTeacher) {
-                                // Fallback For Scan, Add A New Teacher To The List.
-                                Teacher newTeacher = new Teacher();
-                                newTeacher.addName(currentTeacher);
-                                newTeacher.addSubject(currentSubject);
-                                currentSubject.addTeacher(newTeacher);
-                                teachers.add(newTeacher);
-                            }
-                        }
-                    }
-                }
-            }
+        public static Builder fromSchedule(Schedule schedule) {
+            Builder builder = new Builder(schedule.type);
+            builder.classrooms = schedule.classrooms;
+            builder.messages = schedule.messages;
+            builder.day = schedule.day;
+            builder.date = schedule.date;
+            builder.name = schedule.name;
+            builder.origin = schedule.origin;
+            return builder;
         }
 
         private int compareTeachers(Teacher scanTeacher, String teacherName, Subject subject) {
@@ -191,6 +153,44 @@ public class Schedule {
             signatureBuilder.append(":");
             signatureBuilder.append(calendar.get(Calendar.MINUTE));
             signature = signatureBuilder.toString();
+        }
+
+        private void assembleTeachers() {
+            // Changed Back To Regular For To Add The Teachers To The Subjects
+            for (int a = 0; a < classrooms.size(); a++) {
+                Classroom currentClassroom = classrooms.get(a);
+                for (int b = 0; b < currentClassroom.getSubjects().size(); b++) {
+                    Subject currentSubject = currentClassroom.getSubjects().get(b);
+                    for (String currentTeacher : currentSubject.getTeacherStrings()) {
+                        if (!currentSubject.getDescription().isEmpty() && !currentSubject.getName().isEmpty() && !currentTeacher.isEmpty()) {
+                            // Look For The Same Teacher In The Existing List
+                            boolean foundTeacher = false;
+                            for (Teacher scanTeacher : teachers) {
+                                if (foundTeacher) break;
+                                switch (compareTeachers(scanTeacher, currentTeacher, currentSubject)) {
+                                    case COMPARE_INCORRECT:
+                                        break;
+                                    case COMPARE_ADD_NAME:
+                                        scanTeacher.addName(currentTeacher);
+                                    case COMPARE_CORRECT:
+                                        scanTeacher.addSubject(currentSubject);
+                                        currentSubject.addTeacher(scanTeacher);
+                                        foundTeacher = true;
+                                        break;
+                                }
+                            }
+                            if (!foundTeacher) {
+                                // Fallback For Scan, Add A New Teacher To The List.
+                                Teacher newTeacher = new Teacher();
+                                newTeacher.addName(currentTeacher);
+                                newTeacher.addSubject(currentSubject);
+                                currentSubject.addTeacher(newTeacher);
+                                teachers.add(newTeacher);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private Schedule generate() {

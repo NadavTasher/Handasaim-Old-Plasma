@@ -25,12 +25,12 @@ public class Classroom {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public ArrayList<Subject> getSubjects() {
         return subjects;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getGrade() {

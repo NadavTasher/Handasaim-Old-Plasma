@@ -10,14 +10,14 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Scanner;
 
 public class Checker {
+	public static final String maintainer = "http://nockio.com/h/plasma/ota/";
 	public static final String versionFile = "latest.json";
 	public static final String otaFile = "latestota.jar";
 	public static final String otaInstallerFile = "ota.jar";
 	public static final File otaInstallerLocalFile=new File(System.getProperty("user.dir"),otaInstallerFile);
 	public static final File runnableFile=new File(System.getProperty("user.dir"),otaFile);
 
-	
-	public static void checkOTA(String maintainer, double currentVersion,OTAListener resultHanlder) {
+	public static void checkOTA(double currentVersion, OTAListener resultHanlder) {
 		try {
 		URL website;
 		if (maintainer.endsWith("/")) {
@@ -46,8 +46,8 @@ public class Checker {
 			resultHanlder.onOTACheck(false);
 		}
 	}
-	
-	public static void downloadAndStartInstaller(String maintainer) {
+
+	public static void downloadAndStartInstaller() {
 		try {
 			URL website;
 			if (maintainer.endsWith("/")) {

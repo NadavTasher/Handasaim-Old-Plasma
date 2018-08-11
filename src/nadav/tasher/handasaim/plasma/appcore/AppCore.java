@@ -1,8 +1,8 @@
 package nadav.tasher.handasaim.plasma.appcore;
 
-import nadav.tasher.handasaim.architecture.appcore.components.Classroom;
-import nadav.tasher.handasaim.architecture.appcore.components.Schedule;
-import nadav.tasher.handasaim.architecture.appcore.components.Subject;
+import nadav.tasher.handasaim.plasma.appcore.components.Classroom;
+import nadav.tasher.handasaim.plasma.appcore.components.Schedule;
+import nadav.tasher.handasaim.plasma.appcore.components.Subject;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppCore {
-
-    public static double APPCORE_VERSION = 1.5;
+    public static double APPCORE_VERSION = 1.6;
 
     /*
         Note That XSSF Resemmbles XLSX,
@@ -216,83 +215,34 @@ public class AppCore {
     }
 
     public static String getGrades(ArrayList<Classroom> classrooms) {
-        int previeusGrade = Classroom.UNKNOWN_GRADE;
-        for (Classroom currentClassroom : classrooms) {
-            if (currentClassroom.getGrade() == previeusGrade || previeusGrade == Classroom.UNKNOWN_GRADE) {
-                previeusGrade = currentClassroom.getGrade();
-            } else {
-                previeusGrade = Classroom.UNKNOWN_GRADE;
-                break;
+        if (classrooms.size() != 1) {
+            int previousGrade = Classroom.UNKNOWN_GRADE;
+            for (Classroom currentClassroom : classrooms) {
+                if (currentClassroom.getGrade() == previousGrade || previousGrade == Classroom.UNKNOWN_GRADE) {
+                    previousGrade = currentClassroom.getGrade();
+                } else {
+                    previousGrade = Classroom.UNKNOWN_GRADE;
+                    break;
+                }
             }
+            switch (previousGrade) {
+                case Classroom.NINTH_GRADE:
+                    return "ט'";
+                case Classroom.TENTH_GRADE:
+                    return "י'";
+                case Classroom.ELEVENTH_GRADE:
+                    return "יא'";
+                case Classroom.TWELVETH_GRADE:
+                    return "יב'";
+            }
+            StringBuilder allGrades = new StringBuilder();
+            for (Classroom currentClassroom : classrooms) {
+                if (allGrades.length() != 0) allGrades.append(", ");
+                allGrades.append(currentClassroom.getName());
+            }
+            return allGrades.toString();
+        } else {
+            return classrooms.get(0).getName();
         }
-        switch (previeusGrade) {
-            case Classroom.NINTH_GRADE:
-                return "ט'";
-            case Classroom.TENTH_GRADE:
-                return "י'";
-            case Classroom.ELEVENTH_GRADE:
-                return "יא'";
-            case Classroom.TWELVETH_GRADE:
-                return "יב'";
-        }
-        StringBuilder allGrades = new StringBuilder();
-        for (Classroom currentClassroom : classrooms) {
-            if (allGrades.length() != 0) allGrades.append(", ");
-            allGrades.append(currentClassroom.getName());
-        }
-        return allGrades.toString();
     }
-    //    public static ArrayList<Teacher> getTeacherSchudleForClasses(ArrayList<Classroom> classes) {
-    //        ArrayList<Teacher> teacherList = new ArrayList<>();
-    //        for (int currentClass = 0; currentClass < classes.size(); currentClass++) {
-    //            Classroom cClass = classes.get(currentClass);
-    //            for (int currentSubject = 0; currentSubject < cClass.getSubjects().size(); currentSubject++) {
-    //                Classroom.Subject cSubject = cClass.getSubjects().get(currentSubject);
-    //                Teacher.Lesson cLesson = new Teacher.Lesson(cClass.getName(), cSubject.getName(), cSubject.getHour());
-    //                for (int currentTeacherOfSubject = 0; currentTeacherOfSubject < cSubject.getTeachers().size(); currentTeacherOfSubject++) {
-    //                    String nameOfTeacher =  cSubject.getTeachers().get(currentTeacherOfSubject);
-    //                    boolean foundTeacher = false;
-    //                    if (!cSubject.getName().equals("")) {
-    //                        for (int currentTeacher = 0; currentTeacher < teacherList.size(); currentTeacher++) {
-    //                            Teacher cTeacher = teacherList.get(currentTeacher);
-    //                            if (isTheSameTeacher(cTeacher.mainName, nameOfTeacher) == 1) {
-    //                                if (!cTeacher.mainName.equals(nameOfTeacher)) {
-    //                                    if (cTeacher.teaches(cSubject.getName())) {
-    //                                        cTeacher.teaching.add(cLesson);
-    //                                        foundTeacher = true;
-    //                                        break;
-    //                                    }
-    //                                } else {
-    //                                    if (!cTeacher.teaches(cSubject.getName())) {
-    //                                        cTeacher.subjects.add(cSubject.getName());
-    //                                    }
-    //                                    cTeacher.teaching.add(cLesson);
-    //                                    foundTeacher = true;
-    //                                    break;
-    //                                }
-    //                            } else if (isTheSameTeacher(cTeacher.mainName, nameOfTeacher) == 2) {
-    //                                if (!cTeacher.teaches(cSubject.getName())) {
-    //                                    cTeacher.subjects.add(cSubject.getName());
-    //                                }
-    //                                cTeacher.teaching.add(cLesson);
-    //                                foundTeacher = true;
-    //                                break;
-    //                            }
-    //                        }
-    //                        if (!foundTeacher) {
-    //                            Teacher teacher = new Teacher();
-    //                            teacher.mainName = nameOfTeacher;
-    //                            teacher.subjects = new ArrayList<>();
-    //                            teacher.subjects.add(cSubject.getName());
-    //                            teacher.teaching = new ArrayList<>();
-    //                            teacher.teaching.add(cLesson);
-    //                            if (!nameOfTeacher.equals(""))
-    //                                teacherList.add(teacher);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        return teacherList;
-    //    }
 }

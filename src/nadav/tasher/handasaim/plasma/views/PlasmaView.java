@@ -19,7 +19,22 @@ public class PlasmaView extends JPanel {
         setMaximumSize(getPreferredSize());
         barView = new BarView();
         scheduleView = new ScheduleView();
+        // Layout Spacing And Size
+        barView.setPreferredSize(new Dimension(x(), (int) (0.15 * y())));
+        barView.setMinimumSize(barView.getPreferredSize());
+        barView.setMaximumSize(barView.getPreferredSize());
+        scheduleView.setPreferredSize(new Dimension(x(), (int) (0.85 * y())));
+        scheduleView.setMinimumSize(scheduleView.getPreferredSize());
+        scheduleView.setMaximumSize(scheduleView.getPreferredSize());
         add(barView);
         add(scheduleView);
+    }
+
+    public BarView getBarView() {
+        return barView;
+    }
+
+    public ScheduleView getScheduleView() {
+        return scheduleView;
     }
 }
