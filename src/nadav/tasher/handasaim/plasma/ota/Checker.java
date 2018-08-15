@@ -10,10 +10,10 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Scanner;
 
 public class Checker {
-	public static final String maintainer = "http://nockio.com/h/plasma/ota/";
-	public static final String versionFile = "latest.json";
-	public static final String otaFile = "latestota.jar";
-	public static final String otaInstallerFile = "ota.jar";
+	public static final String maintainer = "http://nockio.com/h/p/ota/beta";
+	public static final String versionFile = "info.json";
+	public static final String otaFile = "latest.jar";
+	public static final String otaInstallerFile = "installer.jar";
 	public static final File otaInstallerLocalFile=new File(System.getProperty("user.dir"),otaInstallerFile);
 	public static final File runnableFile=new File(System.getProperty("user.dir"),otaFile);
 
@@ -32,8 +32,8 @@ public class Checker {
 		}
 		s.close();
 		JSONObject mObject=new JSONObject(sb.toString());
-		if(mObject.has("latestVersion")) {
-			if(mObject.getDouble("latestVersion")>currentVersion) {
+			if (mObject.has("version")) {
+				if (mObject.getDouble("version") > currentVersion) {
 				resultHanlder.onOTACheck(true);
 			}else {
 				resultHanlder.onOTACheck(false);
