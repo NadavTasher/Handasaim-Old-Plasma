@@ -11,18 +11,24 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class ScheduleView extends JPanel {
     private static final long serialVersionUID = 1L;
     private Schedule schedule;
     private Timer scrollTimer = new Timer();
-    private ArrayList<Layer> scheduleLayers = new ArrayList<Layer>();
+    private boolean isScheduled = false;
+    private ArrayList<Layer> scheduleLayers = new ArrayList<>();
 
     public ScheduleView() {
         setWaitingView();
     }
 
     private void setWaitingView() {
+        if (isScheduled) {
+            scrollTimer.cancel();
+            isScheduled = false;
+        }
         removeAll();
         setLayout(new GridLayout(1, 1));
         TextView label = new TextView("Waiting For Schedule");
@@ -31,8 +37,41 @@ public class ScheduleView extends JPanel {
     }
 
     public void setSchedule(Schedule schedule) {
+        if (isScheduled) {
+            scrollTimer.cancel();
+            isScheduled = false;
+        }
         this.schedule = schedule;
         setScheduleView();
+        setupTimer();
+    }
+
+    public void setupTimer() {
+        if (isScheduled) {
+            scrollTimer.cancel();
+            isScheduled = false;
+        }
+        scrollTimer.schedule(new TimerTask() {
+            private int scrollIndex = scheduleLayers.size();
+            private int maxScrollIndex = (getSize().height / new Layer(1).getPreferredSize().height) + 1;
+
+            @Override
+            public void run() {
+                isScheduled = true;
+                if (scrollIndex < maxScrollIndex) {
+                    scrollIndex += 1;
+                } else {
+                    scrollIndex = 0;
+                }
+                if (scrollIndex == maxScrollIndex) {
+                    for (Layer l : scheduleLayers) {
+                        l.setVisible(true);
+                    }
+                } else {
+                    scheduleLayers.get(scrollIndex).setVisible(false);
+                }
+            }
+        }, 0, 3000);
     }
 
     private int getLastHour() {
@@ -47,7 +86,7 @@ public class ScheduleView extends JPanel {
             }
             if (classroomLastHour > lastHour) lastHour = classroomLastHour;
         }
-        return lastHour;
+        return lastHour + 1;
     }
 
     private void setScheduleView() {
@@ -55,10 +94,11 @@ public class ScheduleView extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         int lastHour = getLastHour();
         int layerLength = schedule.getClassrooms().size() + 1; // +1 Because Of Hour Number
+//        setLayout(new GridLayout(lastHour+1,1));
         Layer classNames = new Layer(layerLength);
         classNames.addText("כיתות");
         for (Classroom classroom : schedule.getClassrooms()) {
-            classNames.addText(classroom.getName(), Utils.y() / 10);
+            classNames.addText(classroom.getName());
         }
         add(classNames);
         for (int hour = 0; hour < lastHour; hour++) {
@@ -68,6 +108,7 @@ public class ScheduleView extends JPanel {
                 currentLayer.addSubject(classroom.getSubjects().get(hour));
             }
             add(currentLayer);
+            scheduleLayers.add(currentLayer);
         }
         revalidate();
         repaint();
@@ -79,6 +120,9 @@ public class ScheduleView extends JPanel {
         public Layer(int length) {
             setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             setLayout(new GridLayout(1, length));
+            Dimension size = new Dimension(Utils.x(), Utils.y() / 7);
+            setPreferredSize(size);
+            setMinimumSize(size);
         }
 
         public void addText(String text) {
@@ -89,6 +133,7 @@ public class ScheduleView extends JPanel {
             add(currentPanel);
         }
 
+        @Deprecated
         public void addText(String text, int y) {
             JPanel currentPanel = new JPanel();
             currentPanel.setLayout(new GridLayout(1, 1));
