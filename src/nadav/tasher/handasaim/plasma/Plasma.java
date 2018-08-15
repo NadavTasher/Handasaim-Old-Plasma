@@ -80,10 +80,8 @@ public class Plasma {
             for (int i = 0; i < pushes.length(); i++) {
                 JSONObject currentPush = pushes.getJSONObject(i);
                 StringBuilder pushBuilder = new StringBuilder();
-                pushBuilder.append('(');
                 pushBuilder.append(currentPush.getString("sender"));
-                pushBuilder.append(')');
-                pushBuilder.append(' ');
+                pushBuilder.append(' ').append('-').append(' ');
                 pushBuilder.append(currentPush.getString("title"));
                 pushBuilder.append(':').append(' ');
                 pushBuilder.append(currentPush.getString("message"));

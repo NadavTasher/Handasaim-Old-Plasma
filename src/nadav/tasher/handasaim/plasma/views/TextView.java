@@ -29,6 +29,7 @@ public class TextView extends JLabel {
             e.printStackTrace();
         }
         setFont(font);
+        setOpaque(false);
         setHorizontalAlignment(SwingConstants.CENTER);
         setVerticalAlignment(SwingConstants.CENTER);
         setAlignmentX(Component.CENTER_ALIGNMENT);

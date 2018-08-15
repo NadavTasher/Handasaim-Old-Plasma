@@ -39,7 +39,7 @@ public class BarView extends JPanel {
         statusPanel.removeAll();
         clock = new TextView();
         date = new TextView();
-        clock.setTextSize(30);
+        clock.setTextSize(33);
         date.setTextSize(23);
         statusPanel.setLayout(new GridLayout(2, 1));
         statusPanel.add(clock);
@@ -101,7 +101,7 @@ public class BarView extends JPanel {
         message = new TextView();
         messagePanel.add(message);
         messageSwitch.schedule(new TimerTask() {
-            private int index = getMessages().size();
+            private int index = 0;
 
             @Override
             public void run() {
@@ -121,7 +121,7 @@ public class BarView extends JPanel {
                     }
                 }
             }
-        }, 0, 7000);
+        }, 0, 5000);
     }
 
     public static class Message {

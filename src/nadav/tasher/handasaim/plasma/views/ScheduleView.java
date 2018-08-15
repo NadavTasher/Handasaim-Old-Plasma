@@ -15,12 +15,14 @@ import java.util.TimerTask;
 
 public class ScheduleView extends JPanel {
     private static final long serialVersionUID = 1L;
+    public static final Color background = new JPanel().getBackground();
     private Schedule schedule;
     private Timer scrollTimer = new Timer();
     private boolean isScheduled = false;
     private ArrayList<Layer> scheduleLayers = new ArrayList<>();
 
     public ScheduleView() {
+        setBackground(background);
         setWaitingView();
     }
 
@@ -59,7 +61,7 @@ public class ScheduleView extends JPanel {
             public void run() {
                 isScheduled = true;
                 if (scrollIndex < maxScrollIndex) {
-                    scrollIndex += 1;
+                    scrollIndex++;
                 } else {
                     scrollIndex = 0;
                 }
@@ -103,7 +105,8 @@ public class ScheduleView extends JPanel {
         add(classNames);
         for (int hour = 0; hour < lastHour; hour++) {
             Layer currentLayer = new Layer(layerLength);
-            currentLayer.addText(String.valueOf(hour));
+            String value = (hour != 0) ? String.valueOf(hour) : "טרום";
+            currentLayer.addText(value);
             for (Classroom classroom : schedule.getClassrooms()) {
                 currentLayer.addSubject(classroom.getSubjects().get(hour));
             }
@@ -115,7 +118,8 @@ public class ScheduleView extends JPanel {
     }
 
     public static class Layer extends JPanel {
-        private Border border = new CompoundBorder(BorderFactory.createMatteBorder(2, 1, 2, 1, Color.BLACK), BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        public static final Color borderColor = Color.LIGHT_GRAY;
+        private final Border border = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 2, 2, borderColor), BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         public Layer(int length) {
             setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -134,24 +138,12 @@ public class ScheduleView extends JPanel {
             add(currentPanel);
         }
 
-        @Deprecated
-        public void addText(String text, int y) {
-            JPanel currentPanel = new JPanel();
-            currentPanel.setLayout(new GridLayout(1, 1));
-            currentPanel.setBorder(border);
-            currentPanel.setPreferredSize(new Dimension(currentPanel.getSize().width, y));
-            currentPanel.setMinimumSize(currentPanel.getPreferredSize());
-            currentPanel.setMaximumSize(currentPanel.getPreferredSize());
-            currentPanel.add(new TextView(text));
-            add(currentPanel);
-        }
-
         public void addSubject(Subject subject) {
             if (subject.getDescription().isEmpty()) subject = null;
             JPanel currentPanel = new JPanel();
             currentPanel.setLayout(new GridLayout(1, 1));
             currentPanel.setBorder(border);
-            currentPanel.setBackground(Color.LIGHT_GRAY);
+            currentPanel.setBackground(background);
             if (subject != null) {
                 currentPanel.setBackground(new JPanel().getBackground());
                 StringBuilder text = new StringBuilder();
@@ -166,10 +158,6 @@ public class ScheduleView extends JPanel {
                 currentPanel.add(new TextView(text.toString()));
             }
             add(currentPanel);
-        }
-
-        public void addTime(int hour) {
-            add(new TextView(String.valueOf(hour)));
         }
     }
 }
