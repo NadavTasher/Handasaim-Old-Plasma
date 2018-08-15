@@ -10,10 +10,10 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Scanner;
 
 public class Checker {
-	public static final String maintainer = "http://nockio.com/h/p/ota/beta";
+	public static final String maintainer = "http://nockio.com/h/p/ota/beta/";
 	public static final String versionFile = "info.json";
 	public static final String otaFile = "latest.jar";
-	public static final String otaInstallerFile = "installer.jar";
+	public static final String otaInstallerFile = "ota.jar";
 	public static final File otaInstallerLocalFile=new File(System.getProperty("user.dir"),otaInstallerFile);
 	public static final File runnableFile=new File(System.getProperty("user.dir"),otaFile);
 
