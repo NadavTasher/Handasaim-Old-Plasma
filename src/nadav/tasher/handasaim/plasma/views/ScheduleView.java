@@ -53,7 +53,7 @@ public class ScheduleView extends JPanel {
         }
         scrollTimer.schedule(new TimerTask() {
             private int scrollIndex = scheduleLayers.size();
-            private int maxScrollIndex = (getSize().height / new Layer(1).getPreferredSize().height) + 1;
+            private int maxScrollIndex = (getSize().height / new Layer(1).getPreferredSize().height);
 
             @Override
             public void run() {
@@ -63,7 +63,7 @@ public class ScheduleView extends JPanel {
                 } else {
                     scrollIndex = 0;
                 }
-                if (scrollIndex == maxScrollIndex) {
+                if (scrollIndex >= maxScrollIndex) {
                     for (Layer l : scheduleLayers) {
                         l.setVisible(true);
                     }
@@ -123,6 +123,7 @@ public class ScheduleView extends JPanel {
             Dimension size = new Dimension(Utils.x(), Utils.y() / 7);
             setPreferredSize(size);
             setMinimumSize(size);
+            setMaximumSize(size);
         }
 
         public void addText(String text) {

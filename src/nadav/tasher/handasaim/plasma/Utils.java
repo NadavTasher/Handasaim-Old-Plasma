@@ -36,6 +36,12 @@ public class Utils {
         if (result.contains("אזרחות")) {
             result = "אזרחות";
         }
+        if (result.contains("פסיכולוגיה")) {
+            result = "פסיכו'";
+        }
+        if (result.contains("רובוטיקה")) {
+            result = "שרטוט";
+        }
         return result;
     }
 
