@@ -55,9 +55,15 @@ public class ScheduleView extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         int lastHour = getLastHour();
         int layerLength = schedule.getClassrooms().size() + 1; // +1 Because Of Hour Number
+        Layer classNames = new Layer(layerLength);
+        classNames.addText("כיתות");
+        for (Classroom classroom : schedule.getClassrooms()) {
+            classNames.addText(classroom.getName(), Utils.y() / 10);
+        }
+        add(classNames);
         for (int hour = 0; hour < lastHour; hour++) {
             Layer currentLayer = new Layer(layerLength);
-            currentLayer.addTime(hour);
+            currentLayer.addText(String.valueOf(hour));
             for (Classroom classroom : schedule.getClassrooms()) {
                 currentLayer.addSubject(classroom.getSubjects().get(hour));
             }
@@ -71,7 +77,27 @@ public class ScheduleView extends JPanel {
         private Border border = new CompoundBorder(BorderFactory.createMatteBorder(2, 1, 2, 1, Color.BLACK), BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         public Layer(int length) {
+            setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             setLayout(new GridLayout(1, length));
+        }
+
+        public void addText(String text) {
+            JPanel currentPanel = new JPanel();
+            currentPanel.setLayout(new GridLayout(1, 1));
+            currentPanel.setBorder(border);
+            currentPanel.add(new TextView(text));
+            add(currentPanel);
+        }
+
+        public void addText(String text, int y) {
+            JPanel currentPanel = new JPanel();
+            currentPanel.setLayout(new GridLayout(1, 1));
+            currentPanel.setBorder(border);
+            currentPanel.setPreferredSize(new Dimension(currentPanel.getSize().width, y));
+            currentPanel.setMinimumSize(currentPanel.getPreferredSize());
+            currentPanel.setMaximumSize(currentPanel.getPreferredSize());
+            currentPanel.add(new TextView(text));
+            add(currentPanel);
         }
 
         public void addSubject(Subject subject) {
@@ -79,7 +105,9 @@ public class ScheduleView extends JPanel {
             JPanel currentPanel = new JPanel();
             currentPanel.setLayout(new GridLayout(1, 1));
             currentPanel.setBorder(border);
+            currentPanel.setBackground(Color.LIGHT_GRAY);
             if (subject != null) {
+                currentPanel.setBackground(new JPanel().getBackground());
                 StringBuilder text = new StringBuilder();
                 text.append("<b>");
                 text.append(Utils.shrinkSubjectName(subject.getName()));
