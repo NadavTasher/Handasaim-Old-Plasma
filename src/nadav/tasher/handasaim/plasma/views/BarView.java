@@ -22,6 +22,7 @@ public class BarView extends JPanel {
     public BarView() {
         setBackground(barColor);
         setLayout(new GridLayout(1, 2));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         statusPanel.setOpaque(false);
         messagePanel.setOpaque(false);
         add(statusPanel);
@@ -96,12 +97,15 @@ public class BarView extends JPanel {
             isMessageSwitchScheduled = false;
         }
         messagePanel.removeAll();
+        messagePanel.setLayout(new GridLayout(1, 1));
         message = new TextView();
+        messagePanel.add(message);
         messageSwitch.schedule(new TimerTask() {
             private int index = getMessages().size();
 
             @Override
             public void run() {
+                isMessageSwitchScheduled = true;
                 if (index >= getMessages().size()) {
                     index = 0;
                 } else {
@@ -109,18 +113,18 @@ public class BarView extends JPanel {
                 }
                 Message currentMessage = ((index >= getMessages().size()) ? null : getMessages().get(index));
                 if (currentMessage != null) {
+                    message.setText(currentMessage.getMessage());
                     if (currentMessage.getType() == Message.TYPE_SCHEDULE) {
                         message.setTextColor(Color.BLACK);
                     } else {
                         message.setTextColor(Color.WHITE);
                     }
-                    message.setText(currentMessage.getMessage());
                 }
             }
         }, 0, 7000);
     }
 
-    public class Message {
+    public static class Message {
         public static final int TYPE_PUSH = 1;
         public static final int TYPE_SCHEDULE = 0;
         private String message;

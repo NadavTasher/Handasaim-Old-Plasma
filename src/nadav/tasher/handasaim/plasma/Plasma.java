@@ -1,7 +1,10 @@
 package nadav.tasher.handasaim.plasma;
 
 import nadav.tasher.handasaim.plasma.appcore.AppCore;
+import nadav.tasher.handasaim.plasma.appcore.components.Schedule;
 import nadav.tasher.handasaim.plasma.ota.Checker;
+import nadav.tasher.handasaim.plasma.push.Push;
+import nadav.tasher.handasaim.plasma.views.BarView;
 import nadav.tasher.handasaim.plasma.views.PlasmaView;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -16,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,9 +68,29 @@ public class Plasma {
         timer.schedule(new TimerTask() {
             public void run() {
                 refreshSchedule();
+                refreshPush();
                 refreshOTA();
             }
         }, 0, 120 * 1000);
+    }
+
+    private static void refreshPush() {
+        Push.getPushes(pushes -> {
+            ArrayList<String> messages = new ArrayList<>();
+            for (int i = 0; i < pushes.length(); i++) {
+                JSONObject currentPush = pushes.getJSONObject(i);
+                StringBuilder pushBuilder = new StringBuilder();
+                pushBuilder.append('(');
+                pushBuilder.append(currentPush.getString("sender"));
+                pushBuilder.append(')');
+                pushBuilder.append(' ');
+                pushBuilder.append(currentPush.getString("title"));
+                pushBuilder.append(':').append(' ');
+                pushBuilder.append(currentPush.getString("message"));
+                messages.add(pushBuilder.toString());
+            }
+            plasmaView.getBarView().setPushMessages(Utils.toMessages(messages, BarView.Message.TYPE_PUSH));
+        });
     }
 
     private static void refreshOTA() {
@@ -105,11 +129,14 @@ public class Plasma {
                         }
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                         fos.close();
+                        Schedule schedule;
                         if (scheduleLink.endsWith(".xlsx")) {
-                            plasmaView.getScheduleView().setSchedule(AppCore.getSchedule(scheduleFileXLSX));
+                            schedule = AppCore.getSchedule(scheduleFileXLSX);
                         } else {
-                            plasmaView.getScheduleView().setSchedule(AppCore.getSchedule(scheduleFileXLS));
+                            schedule = AppCore.getSchedule(scheduleFileXLS);
                         }
+                        plasmaView.getScheduleView().setSchedule(schedule);
+                        plasmaView.getBarView().setScheduleMessages(Utils.toMessages(schedule.getMessages(), BarView.Message.TYPE_SCHEDULE));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

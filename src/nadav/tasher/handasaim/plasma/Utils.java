@@ -1,8 +1,12 @@
 package nadav.tasher.handasaim.plasma;
 
+import nadav.tasher.handasaim.plasma.views.BarView;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Utils {
     public static String readFile(File f) {
@@ -24,6 +28,14 @@ public class Utils {
         } else {
             return null;
         }
+    }
+
+    public static ArrayList<BarView.Message> toMessages(Collection<String> collection, int type) {
+        ArrayList<BarView.Message> messages = new ArrayList<>();
+        for (String s : collection) {
+            messages.add(new BarView.Message(s, type));
+        }
+        return messages;
     }
 
     public static String shrinkSubjectName(String name) {
