@@ -55,11 +55,12 @@ public class ScheduleView extends JPanel {
         }
         scrollTimer.schedule(new TimerTask() {
             private int scrollIndex = scheduleLayers.size();
-            private int maxScrollIndex = (getSize().height / new Layer(1).getPreferredSize().height);
+            private int maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
 
             @Override
             public void run() {
                 isScheduled = true;
+                maxScrollIndex = (maxScrollIndex < 0) ? 0 : maxScrollIndex;
                 if (scrollIndex < maxScrollIndex) {
                     scrollIndex++;
                 } else {

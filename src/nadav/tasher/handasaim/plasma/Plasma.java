@@ -24,26 +24,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Plasma {
-
     // Static Values
     static final String programName = "Handasaim Plasma";
     static final double programVersion = 2.0;
     static final String programReleaseDate = "~August 2018";
-
     // Private Values
-    private static final File configuration = new File(System.getProperty("user.dir"), "configuration.json");
     private static final File scheduleFileXLSX = new File(System.getProperty("user.dir"), "schedule.xlsx");
     private static final File scheduleFileXLS = new File(System.getProperty("user.dir"), "schedule.xls");
     private static Timer timer = new Timer();
     private static JFrame mainFrame;
-    private static JSONObject settings;
     private static PlasmaView plasmaView;
     private static String scheduleFileName = "";
 
     public static void main(String[] args) {
         loadTheme();
-            loadGUI();
-            loadUpdater();
+        loadGUI();
+        loadUpdater();
     }
 
     private static void loadTheme() {
@@ -56,7 +52,7 @@ public class Plasma {
     }
 
     private static void loadGUI() {
-        mainFrame = new JFrame(programName);
+        mainFrame = new JFrame(programName + " " + programVersion);
         mainFrame.setUndecorated(true);
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         plasmaView = new PlasmaView();
@@ -103,8 +99,7 @@ public class Plasma {
 
     private static void refreshSchedule() {
         try {
-            // TODO change to null
-            String scheduleLink = "http://handasaim.co.il/wp-content/uploads/2017/06/15-5.xls";
+            String scheduleLink = null;
             Document document = Jsoup.connect("http://handasaim.co.il/2017/06/13/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%95%D7%A9%D7%99%D7%A0%D7%95%D7%99%D7%99%D7%9D/").get();
             Elements links = document.select("a");
             for (Element link : links) {

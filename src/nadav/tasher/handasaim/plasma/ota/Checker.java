@@ -10,7 +10,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Scanner;
 
 public class Checker {
-	public static final String maintainer = "http://nockio.com/h/p/ota/beta/";
+	public static final String maintainer = "http://nockio.com/h/p/ota/rollout/";
 	public static final String versionFile = "info.json";
 	public static final String otaFile = "latest.jar";
 	public static final String otaInstallerFile = "ota.jar";

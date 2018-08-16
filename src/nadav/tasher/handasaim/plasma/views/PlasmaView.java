@@ -8,6 +8,8 @@ import static nadav.tasher.handasaim.plasma.Utils.y;
 
 public class PlasmaView extends JPanel {
     private static final long serialVersionUID = 1L;
+    public static final int scheduleViewHeight = (int) (y() * 0.85);
+    public static final int barViewHeight = (int) (y() * 0.15);
     private BarView barView;
     private ScheduleView scheduleView;
 
@@ -20,10 +22,10 @@ public class PlasmaView extends JPanel {
         barView = new BarView();
         scheduleView = new ScheduleView();
         // Layout Spacing And Size
-        barView.setPreferredSize(new Dimension(x(), (int) (0.15 * y())));
+        barView.setPreferredSize(new Dimension(x(), barViewHeight));
         barView.setMinimumSize(barView.getPreferredSize());
         barView.setMaximumSize(barView.getPreferredSize());
-        scheduleView.setPreferredSize(new Dimension(x(), (int) (0.85 * y())));
+        scheduleView.setPreferredSize(new Dimension(x(), scheduleViewHeight));
         scheduleView.setMinimumSize(scheduleView.getPreferredSize());
         scheduleView.setMaximumSize(scheduleView.getPreferredSize());
         add(barView);

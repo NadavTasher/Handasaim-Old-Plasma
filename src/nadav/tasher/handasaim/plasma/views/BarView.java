@@ -114,11 +114,11 @@ public class BarView extends JPanel {
                 Message currentMessage = ((index >= getMessages().size()) ? null : getMessages().get(index));
                 if (currentMessage != null) {
                     message.setText(currentMessage.getMessage());
-                    if (currentMessage.getType() == Message.TYPE_SCHEDULE) {
-                        message.setTextColor(Color.BLACK);
-                    } else {
-                        message.setTextColor(Color.WHITE);
-                    }
+//                    if (currentMessage.getType() == Message.TYPE_SCHEDULE) {
+//                        message.setTextColor(Color.BLACK);
+//                    } else {
+//                        message.setTextColor(Color.WHITE);
+//                    }
                 }
             }
         }, 0, 5000);
