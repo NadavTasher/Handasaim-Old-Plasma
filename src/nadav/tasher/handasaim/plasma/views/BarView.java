@@ -106,19 +106,23 @@ public class BarView extends JPanel {
             @Override
             public void run() {
                 isMessageSwitchScheduled = true;
-                if (index >= getMessages().size()) {
-                    index = 0;
-                } else {
-                    index++;
-                }
-                Message currentMessage = ((index >= getMessages().size()) ? null : getMessages().get(index));
-                if (currentMessage != null) {
-                    message.setText(currentMessage.getMessage());
+                if (!getMessages().isEmpty()) {
+                    if (index < getMessages().size() - 1) {
+                        index++;
+                    } else {
+                        index = 0;
+                    }
+                    Message currentMessage = (getMessages().get(index));
+//                    System.out.println(currentMessage);
+                    if (currentMessage != null) {
+                        message.setText(currentMessage.getMessage());
+                        message.setTextColor(Color.BLACK);
 //                    if (currentMessage.getType() == Message.TYPE_SCHEDULE) {
 //                        message.setTextColor(Color.BLACK);
 //                    } else {
 //                        message.setTextColor(Color.WHITE);
 //                    }
+                    }
                 }
             }
         }, 0, 5000);
