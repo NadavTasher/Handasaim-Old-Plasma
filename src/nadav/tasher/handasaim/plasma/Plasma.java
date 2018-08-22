@@ -26,7 +26,7 @@ import java.util.TimerTask;
 public class Plasma {
     // Static Values
     static final String programName = "Handasaim Plasma";
-    static final double programVersion = 2.0;
+    static final double programVersion = 2.1;
     static final String programReleaseDate = "~August 2018";
     // Private Values
     private static final File scheduleFileXLSX = new File(System.getProperty("user.dir"), "schedule.xlsx");
