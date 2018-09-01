@@ -9,7 +9,6 @@ import nadav.tasher.handasaim.plasma.views.PlasmaView;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.swing.*;
@@ -22,12 +21,15 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 public class Plasma {
     // Static Values
     static final String programName = "Handasaim Plasma";
-    static final double programVersion = 2.1;
-    static final String programReleaseDate = "~August 2018";
+    static final double programVersion = 2.2;
+    static final String programReleaseDate = "~September 2018";
+    static final String schedulePage = "http://handasaim.co.il/2018/08/31/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%95%D7%A9%D7%99%D7%A0%D7%95%D7%99%D7%99%D7%9D-2/";
+    static final String homePage = "http://handasaim.co.il/";
     // Private Values
     private static final File scheduleFileXLSX = new File(System.getProperty("user.dir"), "schedule.xlsx");
     private static final File scheduleFileXLS = new File(System.getProperty("user.dir"), "schedule.xls");
@@ -97,46 +99,65 @@ public class Plasma {
         });
     }
 
-    private static void refreshSchedule() {
+    private static String getScheduleLink() {
+        String file = null;
+        //        file = "http://nockio.com/h/schedulearchives/15-5.xls";
         try {
-            String scheduleLink = null;
-            Document document = Jsoup.connect("http://handasaim.co.il/2017/06/13/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%95%D7%A9%D7%99%D7%A0%D7%95%D7%99%D7%99%D7%9D/").get();
-            Elements links = document.select("a");
-            for (Element link : links) {
-                if (link.attr("href").endsWith(".xls") || link.attr("href").endsWith(".xlsx")) {
-                    scheduleLink = link.attr("href");
-                    break;
+            // Main Search At Schedule Page
+            Document document = Jsoup.connect(schedulePage).get();
+            Elements elements = document.select("a");
+            for (int i = 0; (i < elements.size() && file == null); i++) {
+                String attribute = elements.get(i).attr("href");
+                if (attribute.endsWith(".xls") || attribute.endsWith(".xlsx")) {
+                    file = attribute;
                 }
             }
-            if (scheduleLink != null) {
-                if (!scheduleLink.equals(scheduleFileName)) {
-                    scheduleFileName = scheduleLink;
-                    try {
-                        URL website = new URL(scheduleLink);
-                        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                        FileOutputStream fos;
-                        if (scheduleLink.endsWith(".xlsx")) {
-                            fos = new FileOutputStream(scheduleFileXLSX);
-                        } else {
-                            fos = new FileOutputStream(scheduleFileXLS);
-                        }
-                        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                        fos.close();
-                        Schedule schedule;
-                        if (scheduleLink.endsWith(".xlsx")) {
-                            schedule = AppCore.getSchedule(scheduleFileXLSX);
-                        } else {
-                            schedule = AppCore.getSchedule(scheduleFileXLS);
-                        }
-                        plasmaView.getScheduleView().setSchedule(schedule);
-                        plasmaView.getBarView().setScheduleMessages(Utils.toMessages(schedule.getMessages(), BarView.Message.TYPE_SCHEDULE));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            // Fallback Search At Home Page
+            if (file == null) {
+                Document documentFallback = Jsoup.connect(homePage).get();
+                Elements elementsFallback = documentFallback.select("a");
+                for (int i = 0; (i < elementsFallback.size() && file == null); i++) {
+                    String attribute = elementsFallback.get(i).attr("href");
+                    //                    Log.i("LinkFallback",attribute);
+                    if ((attribute.endsWith(".xls") || attribute.endsWith(".xlsx")) && Pattern.compile("(/.[^a-z]+\\..+)$").matcher(attribute).find()) {
+                        file = attribute;
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Schedule Refresh Failed!");
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private static void refreshSchedule() {
+        String link = getScheduleLink();
+        if (link != null) {
+            if (!link.equals(scheduleFileName)) {
+                scheduleFileName = link;
+                try {
+                    URL website = new URL(link);
+                    ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                    FileOutputStream fos;
+                    if (link.endsWith(".xlsx")) {
+                        fos = new FileOutputStream(scheduleFileXLSX);
+                    } else {
+                        fos = new FileOutputStream(scheduleFileXLS);
+                    }
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                    fos.close();
+                    Schedule schedule;
+                    if (link.endsWith(".xlsx")) {
+                        schedule = AppCore.getSchedule(scheduleFileXLSX);
+                    } else {
+                        schedule = AppCore.getSchedule(scheduleFileXLS);
+                    }
+                    plasmaView.getScheduleView().setSchedule(schedule);
+                    plasmaView.getBarView().setScheduleMessages(Utils.toMessages(schedule.getMessages(), BarView.Message.TYPE_SCHEDULE));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
