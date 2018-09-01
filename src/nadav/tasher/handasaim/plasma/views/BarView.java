@@ -66,7 +66,7 @@ public class BarView extends JPanel {
                         lastDay = currentDay;
                         String dateBuilder = Utils.dayConvert(currentDay) +
                                 ',' + ' ' +
-                                (currentTime.get(Calendar.DAY_OF_MONTH) + 1) +
+                                (currentTime.get(Calendar.DAY_OF_MONTH)) +
                                 '.' +
                                 (currentTime.get(Calendar.MONTH) + 1);
                         date.setText(dateBuilder);
@@ -77,11 +77,13 @@ public class BarView extends JPanel {
     }
 
     public void setScheduleMessages(ArrayList<Message> messages) {
-        scheduleMessages = messages;
+        scheduleMessages.clear();
+        scheduleMessages.addAll(messages);
     }
 
     public void setPushMessages(ArrayList<Message> messages) {
-        pushMessages = messages;
+        pushMessages.clear();
+        pushMessages.addAll(messages);
     }
 
     private ArrayList<Message> getMessages() {
@@ -123,6 +125,8 @@ public class BarView extends JPanel {
 //                        message.setTextColor(Color.WHITE);
 //                    }
                     }
+                } else {
+                    message.setText("");
                 }
             }
         }, 0, 5000);

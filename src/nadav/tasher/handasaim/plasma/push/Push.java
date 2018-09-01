@@ -5,7 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Push {
-    public static final String maintainer = "http://nockio.com/h/x/push/";
+    public static final String maintainer = "http://nockio.com/h/x/push/test/";
 
     public static void getPushes(OnFetch onFetch) {
         try {
@@ -29,6 +29,7 @@ public class Push {
                 }
                 response.close();
             }
+            System.out.println("Push Refresh");
         } catch (Exception e) {
             e.printStackTrace();
             onFetch.onFetch(new JSONArray());
