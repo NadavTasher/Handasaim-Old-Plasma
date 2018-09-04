@@ -5,7 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Push {
-    public static final String maintainer = "http://nockio.com/h/x/push/test/";
+    public static final String maintainer = "http://nockio.com/h/x/push/";
 
     public static void getPushes(OnFetch onFetch) {
         try {

@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 public class Plasma {
     // Static Values
     static final String programName = "Handasaim Plasma";
-    static final double programVersion = 2.2;
+    static final double programVersion = 2.3;
     static final String programReleaseDate = "~September 2018";
     static final String schedulePage = "http://handasaim.co.il/2018/08/31/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%95%D7%A9%D7%99%D7%A0%D7%95%D7%99%D7%99%D7%9D-2/";
     static final String homePage = "http://handasaim.co.il/";

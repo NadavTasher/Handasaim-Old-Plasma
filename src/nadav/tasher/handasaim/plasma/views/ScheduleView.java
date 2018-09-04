@@ -18,19 +18,49 @@ public class ScheduleView extends JPanel {
     public static final Color background = new JPanel().getBackground();
     private Schedule schedule;
     private Timer scrollTimer = new Timer();
-    private boolean isScheduled = false;
+    private boolean scrolling = false;
     private ArrayList<Layer> scheduleLayers = new ArrayList<>();
+    private TimerTask scroll = new TimerTask() {
+        private int scrollIndex = 0;
+        private int maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
+
+        @Override
+        public void run() {
+            update();
+            if (scrolling) {
+                maxScrollIndex = (maxScrollIndex < 0) ? 0 : maxScrollIndex;
+                if (scrollIndex >= maxScrollIndex) {
+                    for (Layer l : scheduleLayers) {
+                        if (!l.isVisible())
+                            l.setVisible(true);
+                    }
+                } else {
+                    scheduleLayers.get(scrollIndex).setVisible(false);
+                }
+                if (scrollIndex < maxScrollIndex) {
+                    scrollIndex++;
+                } else {
+                    scrollIndex = 0;
+                }
+                revalidate();
+                repaint();
+            }
+        }
+
+        public void update() {
+//            scrollIndex = scheduleLayers.size();
+            maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
+        }
+    };
 
     public ScheduleView() {
         setBackground(background);
         setWaitingView();
+        setupTimer();
     }
 
     private void setWaitingView() {
-        if (isScheduled) {
-            scrollTimer.cancel();
-            isScheduled = false;
-        }
+        disableScrolling();
         removeAll();
         setLayout(new GridLayout(1, 1));
         TextView label = new TextView("Waiting For Schedule");
@@ -38,43 +68,22 @@ public class ScheduleView extends JPanel {
         add(label);
     }
 
+    public void enableScrolling() {
+        scrolling = true;
+    }
+
+    public void disableScrolling() {
+        scrolling = false;
+    }
+
     public void setSchedule(Schedule schedule) {
-        if (isScheduled) {
-            scrollTimer.cancel();
-            isScheduled = false;
-        }
         this.schedule = schedule;
         setScheduleView();
-        setupTimer();
+        enableScrolling();
     }
 
     public void setupTimer() {
-        if (isScheduled) {
-            scrollTimer.cancel();
-            isScheduled = false;
-        }
-        scrollTimer.schedule(new TimerTask() {
-            private int scrollIndex = scheduleLayers.size();
-            private int maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
-
-            @Override
-            public void run() {
-                isScheduled = true;
-                maxScrollIndex = (maxScrollIndex < 0) ? 0 : maxScrollIndex;
-                if (scrollIndex < maxScrollIndex) {
-                    scrollIndex++;
-                } else {
-                    scrollIndex = 0;
-                }
-                if (scrollIndex >= maxScrollIndex) {
-                    for (Layer l : scheduleLayers) {
-                        l.setVisible(true);
-                    }
-                } else {
-                    scheduleLayers.get(scrollIndex).setVisible(false);
-                }
-            }
-        }, 0, 3000);
+        scrollTimer.schedule(scroll, 0, 3000);
     }
 
     private int getLastHour() {
@@ -98,7 +107,7 @@ public class ScheduleView extends JPanel {
         int lastHour = getLastHour();
         int layerLength = schedule.getClassrooms().size() + 1; // +1 Because Of Hour Number
 //        setLayout(new GridLayout(lastHour+1,1));
-        Layer classNames = new Layer(layerLength);
+        Layer classNames = new Layer(layerLength, Utils.y() / 12);
         classNames.addText("כיתות");
         for (Classroom classroom : schedule.getClassrooms()) {
             classNames.addText(classroom.getName());
@@ -126,6 +135,15 @@ public class ScheduleView extends JPanel {
             setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             setLayout(new GridLayout(1, length));
             Dimension size = new Dimension(Utils.x(), Utils.y() / 7);
+            setPreferredSize(size);
+            setMinimumSize(size);
+            setMaximumSize(size);
+        }
+
+        public Layer(int length, int height) {
+            setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+            setLayout(new GridLayout(1, length));
+            Dimension size = new Dimension(Utils.x(), height);
             setPreferredSize(size);
             setMinimumSize(size);
             setMaximumSize(size);

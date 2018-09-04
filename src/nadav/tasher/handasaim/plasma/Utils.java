@@ -54,6 +54,12 @@ public class Utils {
         if (result.contains("רובוטיקה")) {
             result = "שרטוט";
         }
+        if (result.contains("תכנות בסביבת האינטרט")) {
+            result = "תכנות אינט'";
+        }
+        if (result.contains("פיזיקה/מע פיזיקה")) {
+            result = "פיזיקה + מע";
+        }
         return result;
     }
 
