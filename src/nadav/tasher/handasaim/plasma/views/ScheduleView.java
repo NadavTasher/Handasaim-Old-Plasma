@@ -14,8 +14,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ScheduleView extends JPanel {
-    private static final long serialVersionUID = 1L;
     public static final Color background = new JPanel().getBackground();
+    private static final long serialVersionUID = 1L;
     private Schedule schedule;
     private Timer scrollTimer = new Timer();
     private boolean scrolling = false;
@@ -28,7 +28,6 @@ public class ScheduleView extends JPanel {
         public void run() {
             update();
             if (scrolling) {
-                maxScrollIndex = (maxScrollIndex < 0) ? 0 : maxScrollIndex;
                 if (scrollIndex >= maxScrollIndex) {
                     for (Layer l : scheduleLayers) {
                         if (!l.isVisible())
@@ -49,7 +48,9 @@ public class ScheduleView extends JPanel {
 
         public void update() {
 //            scrollIndex = scheduleLayers.size();
+            scrollIndex = (scrollIndex > maxScrollIndex) ? 0 : scrollIndex;
             maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
+            maxScrollIndex = (maxScrollIndex < 0) ? 0 : maxScrollIndex;
         }
     };
 
@@ -103,6 +104,7 @@ public class ScheduleView extends JPanel {
 
     private void setScheduleView() {
         removeAll();
+        scheduleLayers.clear();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         int lastHour = getLastHour();
         int layerLength = schedule.getClassrooms().size() + 1; // +1 Because Of Hour Number
