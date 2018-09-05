@@ -117,8 +117,7 @@ public class ScheduleView extends JPanel {
         add(hours);
         for (int classroomIndex = 0; classroomIndex < schedule.getClassrooms().size(); classroomIndex++) {
             Classroom classroom = schedule.getClassrooms().get(classroomIndex);
-            int singularValue = 255 - classroomIndex * 5;
-            Layer currentClassroom = new Layer(layerLength, new Color(singularValue, singularValue, singularValue));
+            Layer currentClassroom = new Layer(layerLength, background);
             currentClassroom.addText(classroom.getName());
             if (classroom.getSubjects().size() >= lastHour) {
                 for (int index = 0; index < lastHour; index++) {
@@ -153,13 +152,13 @@ public class ScheduleView extends JPanel {
             setPreferredSize(size);
             setMinimumSize(size);
             setMaximumSize(size);
+            setBorder(border);
             this.background = background;
         }
 
         public void addText(String text) {
             JPanel currentPanel = new JPanel();
             currentPanel.setLayout(new GridLayout(1, 1));
-            currentPanel.setBorder(border);
             currentPanel.setBackground(this.background);
             currentPanel.add(new TextView(text));
             add(currentPanel);
@@ -167,10 +166,9 @@ public class ScheduleView extends JPanel {
 
         public void addSubject(Subject subject) {
             if (subject.getDescription().isEmpty()) subject = null;
-            JPanel currentPanel = new JPanel();
-            currentPanel.setLayout(new GridLayout(1, 1));
-            currentPanel.setBorder(border);
-            currentPanel.setBackground(this.background);
+            TextView currentText = new TextView();
+            currentText.setOpaque(true);
+            currentText.setBackground(this.background);
             if (subject != null) {
                 StringBuilder text = new StringBuilder();
                 text.append("<center>");
@@ -187,10 +185,9 @@ public class ScheduleView extends JPanel {
                 }
                 text.append("</p>");
                 text.append("</center>");
-                TextView textView = new TextView(text.toString());
-                currentPanel.add(textView);
+                currentText.setText(text.toString());
             }
-            add(currentPanel);
+            add(currentText);
         }
     }
 }

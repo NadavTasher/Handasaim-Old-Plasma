@@ -40,7 +40,7 @@ public class TextView extends JLabel {
 
     @Override
     public void setText(String text) {
-        super.setText("<html>" + "<p>" + text + "</p>" + "</html>");
+        super.setText("<html>" + "<div style='text-align: center;'>" + text + "</div>" + "</html>");
     }
 
     public void setTextSize(float size) {
