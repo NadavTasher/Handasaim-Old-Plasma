@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ScheduleView extends JPanel {
+public class ScheduleViewOld extends JPanel {
     public static final Color background = new JPanel().getBackground();
     private static final long serialVersionUID = 1L;
     private Schedule schedule;
@@ -22,7 +22,7 @@ public class ScheduleView extends JPanel {
     private ArrayList<Layer> scheduleLayers = new ArrayList<>();
     private TimerTask scroll = new TimerTask() {
         private int scrollIndex = 0;
-        private int maxScrollIndex = 0;
+        private int maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
 
         @Override
         public void run() {
@@ -49,12 +49,12 @@ public class ScheduleView extends JPanel {
         public void update() {
 //            scrollIndex = scheduleLayers.size();
             scrollIndex = (scrollIndex > maxScrollIndex) ? 0 : scrollIndex;
-            maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - Layer.DEFAULT_HEIGHT) / Layer.DEFAULT_HEIGHT);
+            maxScrollIndex = scheduleLayers.size() - ((PlasmaView.scheduleViewHeight - new Layer(1).getPreferredSize().height) / new Layer(1).getPreferredSize().height);
             maxScrollIndex = (maxScrollIndex < 0) ? 0 : maxScrollIndex;
         }
     };
 
-    public ScheduleView() {
+    public ScheduleViewOld() {
         setBackground(background);
         setWaitingView();
         setupTimer();
@@ -106,27 +106,24 @@ public class ScheduleView extends JPanel {
         removeAll();
         scheduleLayers.clear();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        int layerLength = getLastHour() + 1;//+1 Cause Title
         int lastHour = getLastHour();
-        Layer hours = new Layer(layerLength, Utils.y() / 12, background);
-        hours.addText("שעה");
-        for (int hour = 0; hour < lastHour; hour++) {
-            String value = (hour != 0) ? String.valueOf(hour) : "טרום";
-            hours.addText(value);
+        int layerLength = schedule.getClassrooms().size() + 1; // +1 Because Of Hour Number
+//        setLayout(new GridLayout(lastHour+1,1));
+        Layer classNames = new Layer(layerLength, Utils.y() / 12);
+        classNames.addText("כיתות");
+        for (Classroom classroom : schedule.getClassrooms()) {
+            classNames.addText(classroom.getName());
         }
-        add(hours);
-        for (int classroomIndex = 0; classroomIndex < schedule.getClassrooms().size(); classroomIndex++) {
-            Classroom classroom = schedule.getClassrooms().get(classroomIndex);
-            int singularValue = 255 - classroomIndex * 5;
-            Layer currentClassroom = new Layer(layerLength, new Color(singularValue, singularValue, singularValue));
-            currentClassroom.addText(classroom.getName());
-            if (classroom.getSubjects().size() >= lastHour) {
-                for (int index = 0; index < lastHour; index++) {
-                    currentClassroom.addSubject(classroom.getSubjects().get(index));
-                }
+        add(classNames);
+        for (int hour = 0; hour < lastHour; hour++) {
+            Layer currentLayer = new Layer(layerLength);
+            String value = (hour != 0) ? String.valueOf(hour) : "טרום";
+            currentLayer.addText(value);
+            for (Classroom classroom : schedule.getClassrooms()) {
+                currentLayer.addSubject(classroom.getSubjects().get(hour));
             }
-            scheduleLayers.add(currentClassroom);
-            add(currentClassroom);
+            add(currentLayer);
+            scheduleLayers.add(currentLayer);
         }
         revalidate();
         repaint();
@@ -134,33 +131,30 @@ public class ScheduleView extends JPanel {
 
     public static class Layer extends JPanel {
         public static final Color borderColor = Color.LIGHT_GRAY;
-        public static final int DEFAULT_HEIGHT = Utils.y() / 7;
-        private final Border border = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, borderColor), BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        private Color background = ScheduleView.background;
+        private final Border border = new CompoundBorder(BorderFactory.createMatteBorder(0, 0, 2, 2, borderColor), BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
-        public Layer(int length, Color color) {
-            init(length, DEFAULT_HEIGHT, color);
+        public Layer(int length) {
+            setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+            setLayout(new GridLayout(1, length));
+            Dimension size = new Dimension(Utils.x(), Utils.y() / 7);
+            setPreferredSize(size);
+            setMinimumSize(size);
+            setMaximumSize(size);
         }
 
-        public Layer(int length, int height, Color color) {
-            init(length, height, color);
-        }
-
-        private void init(int length, int height, Color background) {
+        public Layer(int length, int height) {
             setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             setLayout(new GridLayout(1, length));
             Dimension size = new Dimension(Utils.x(), height);
             setPreferredSize(size);
             setMinimumSize(size);
             setMaximumSize(size);
-            this.background = background;
         }
 
         public void addText(String text) {
             JPanel currentPanel = new JPanel();
             currentPanel.setLayout(new GridLayout(1, 1));
             currentPanel.setBorder(border);
-            currentPanel.setBackground(this.background);
             currentPanel.add(new TextView(text));
             add(currentPanel);
         }
@@ -170,25 +164,19 @@ public class ScheduleView extends JPanel {
             JPanel currentPanel = new JPanel();
             currentPanel.setLayout(new GridLayout(1, 1));
             currentPanel.setBorder(border);
-            currentPanel.setBackground(this.background);
+            currentPanel.setBackground(background);
             if (subject != null) {
+                currentPanel.setBackground(new JPanel().getBackground());
                 StringBuilder text = new StringBuilder();
-                text.append("<center>");
-                text.append("<i>");
-//                text.append("<b>");
+                text.append("<b>");
                 text.append(Utils.shrinkSubjectName(subject.getName()));
-//                text.append("</b>");
-                text.append("</i>");
-//                text.append("<br/>");
-                text.append("<p style=\"font-size:13px;\">");
+                text.append("</b>");
+                text.append("<br/>");
                 for (int teacher = 0; teacher < subject.getTeachers().size(); teacher++) {
-                    if (teacher > 0) text.append(",");
+                    if (teacher > 0) text.append(", ");
                     text.append(Utils.shrinkTeacherName(subject.getTeachers().get(teacher).getName().split("\\s")[0], subject.getTeachers().size()));
                 }
-                text.append("</p>");
-                text.append("</center>");
-                TextView textView = new TextView(text.toString());
-                currentPanel.add(textView);
+                currentPanel.add(new TextView(text.toString()));
             }
             add(currentPanel);
         }

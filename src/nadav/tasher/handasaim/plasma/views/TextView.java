@@ -32,15 +32,15 @@ public class TextView extends JLabel {
         setOpaque(false);
         setHorizontalAlignment(SwingConstants.CENTER);
         setVerticalAlignment(SwingConstants.CENTER);
-        setAlignmentX(Component.CENTER_ALIGNMENT);
-        setAlignmentY(Component.CENTER_ALIGNMENT);
-        setVerticalTextPosition(SwingConstants.CENTER);
-        setHorizontalTextPosition(SwingConstants.CENTER);
+//        setAlignmentX(Component.CENTER_ALIGNMENT);
+//        setAlignmentY(Component.CENTER_ALIGNMENT);
+//        setVerticalTextPosition(SwingConstants.CENTER);
+//        setHorizontalTextPosition(SwingConstants.CENTER);
     }
 
     @Override
     public void setText(String text) {
-        super.setText("<html>\n" + "<p align=\"center\">" + text + "</p>" + "\n</html>");
+        super.setText("<html>" + "<p>" + text + "</p>" + "</html>");
     }
 
     public void setTextSize(float size) {

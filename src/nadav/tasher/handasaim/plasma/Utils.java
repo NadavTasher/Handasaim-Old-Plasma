@@ -41,7 +41,7 @@ public class Utils {
     public static String shrinkSubjectName(String name) {
         String result = name;
         if (result.contains("מתמטיקה") && !result.contains("טכניונית") && result.contains("טכ")) {
-            result = "מתמט' + טכ";
+            result = "מתמט'/טכ";
         } else if (result.contains("מתמטיקה") && result.contains("טכניונית")) {
             result = "טכניונית";
         }
@@ -57,14 +57,18 @@ public class Utils {
         if (result.contains("פעילות נחשון")) {
             result = "נחשון";
         }
-        if (result.contains("תכנות בסביבת האינטרט")) {
-            result = "תכנות אינט'";
-        }
-        if (result.contains("פיזיקה/מע פיזיקה")) {
-            result = "פיזיקה + מע";
-        }
         result = result.replaceAll("מדעי המחשב", "מדמח");
+        result = result.replaceAll("מתמטיקה", "מתמט'");
         result = result.replaceAll("מע אלקטרוניקה", "אלקט'");
+        result = result.replaceAll("אלקטרוניקה", "אלקט'");
+        result = result.replaceAll("ביוטכנולוגיה", "ביוטכ'");
+        result = result.replaceAll("לווינים וחלל", "לווינים");
+        result = result.replaceAll("ביוטכנולוג", "ביוטכ'");
+        result = result.replaceAll("תכנות בסביבת האינטרט", "תכנות אינט'");
+        result = result.replaceAll("מחשבים", "מחש'");
+        result = result.replaceAll("יישומי ביו", "יישומי");
+        result = result.replaceAll("מדעי", "מדמח");
+        result = result.replaceAll("/", "<br/>+ ");
         return result;
     }
 
